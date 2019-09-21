@@ -12,6 +12,8 @@ import io.github.xpakx.micro.repository.PostRepository;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.User;
 import io.github.xpakx.micro.error.UserNotFound;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 import org.mockito.Mock;
 import org.mockito.InjectMocks;
@@ -21,7 +23,11 @@ import org.mockito.MockitoAnnotations;
 import org.hamcrest.Matchers;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.mockito.ArgumentCaptor;
 
+
+import java.util.List;
+import java.util.ArrayList;
 
 @RunWith(SpringRunner.class)
 public class PostServiceTest 
@@ -178,5 +184,70 @@ public class PostServiceTest
     then(postRepository).shouldHaveNoMoreInteractions();
   }
 
-
+  @Test
+  public void serviceShouldAddNewPost()
+  {
+    //given
+    //when
+    Post result = postService.addPost(first);
+    
+    //then
+    ArgumentCaptor<Post> postCaptor = ArgumentCaptor.forClass(Post.class);
+    then(postRepository)
+    .should(times(1))
+    .save(postCaptor.capture());
+    assertThat(result.getMessage(), Matchers.is(first.getMessage()));
+    
+    Post postArgument = postCaptor.getValue();
+    assertThat(postArgument.getMessage(), Matchers.is(first.getMessage()));
+    assertNull(postArgument.getId());
+  }
+  
+  @Test void serviceShouldReturnListOfPosts()
+  {
+    //given
+    Page<Post> posts = Page.empty();
+    given(postRepository.findAll(any(Pageable.class)))
+    .willReturn(posts);
+    
+    //when
+    Page<Post> result =  postService.findAll(0);
+    
+    //then
+    ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+    
+    then(postRepository)
+    .should(times(1))
+    .findAll(pageableCaptor.capture());
+    then(postRepository).shouldHaveNoMoreInteractions();
+    assertThat(result, Matchers.is(posts));
+    
+    Pageable pageableArgument = pageableCaptor.getValue();
+    assertEquals(pageableArgument.getPageNumber(), 0);
+  }
+  
+  @Test void serviceShouldReturnListOfUserPosts()
+  {
+    //given
+    Page<Post> posts = Page.empty();
+    given(postRepository.findAllByUserId(anyInt(), any(Pageable.class)))
+    .willReturn(posts);
+    
+    //when
+    Page<Post> result =  postService.findAllByUserId(1, 0);
+    
+    //then
+    ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+    ArgumentCaptor<Integer> integerCaptor = ArgumentCaptor.forClass(Integer.class);
+    
+    then(postRepository)
+    .should(times(1))
+    .findAllByUserId(integerCaptor.capture(), pageableCaptor.capture());
+    then(postRepository).shouldHaveNoMoreInteractions();
+    assertThat(result, Matchers.is(posts));
+    
+    Pageable pageableArgument = pageableCaptor.getValue();
+    assertEquals(pageableArgument.getPageNumber(), 0);
+  }
+  
 }

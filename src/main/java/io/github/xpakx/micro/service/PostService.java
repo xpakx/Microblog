@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.repository.PostRepository;
 import io.github.xpakx.micro.error.UserNotFound;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class PostService
@@ -42,18 +46,28 @@ public class PostService
   
   public Post addPost(Post post)
   {
-    return null;
+    post.setId(null);
+    postRepository.save(post);
+
+    return post;
+  }
+    
+  public Page<Post> findAll(Integer page)
+  {
+    Pageable nthPageWith20Elements = PageRequest.of(page, 20, Sort.by("id").descending());
+    Page<Post> allPosts = postRepository.findAll(nthPageWith20Elements);
+    
+    return allPosts;
   }
   
-  public List<Post> findAllByUsername(String producerName, Integer page)
+  public Page<Post> findAllByUserId(Integer userId, Integer page)
   {
-    return null;    
+    Pageable nthPageWith20Elements = PageRequest.of(page, 20, Sort.by("id").descending());
+    Page<Post> allPosts = postRepository.findAllByUserId(userId, nthPageWith20Elements);
+    
+    return allPosts;   
   }
-  
-  public List<Post> findAll(Integer page)
-  {
-    return null;
-  }
+
 
 
 }
