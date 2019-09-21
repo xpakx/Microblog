@@ -15,7 +15,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Data
-public class Post
+public class Comment
 {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,7 +26,7 @@ public class Post
 
 
   @ManyToOne(fetch=FetchType.LAZY, optional=false)
-  @JoinColumn(name="user_id", nullable=false)
+  @JoinColumn(name="post_id", nullable=false)
   @OnDelete(action=OnDeleteAction.CASCADE)
-  private User user;  
+  private Post post;  
 }
