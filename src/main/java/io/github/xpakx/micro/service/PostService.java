@@ -68,6 +68,4 @@ public class PostService
     return allPosts;   
   }
 
-
-
 }
