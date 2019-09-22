@@ -30,7 +30,9 @@ import org.mockito.Mock;
 import org.mockito.InjectMocks;
 
 import io.github.xpakx.micro.service.PostService;
+import io.github.xpakx.micro.service.UserService;
 import io.github.xpakx.micro.entity.Post;
+import io.github.xpakx.micro.entity.User;
 import org.mockito.MockitoAnnotations;
 import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.*;
@@ -39,6 +41,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.data.domain.Page;
+import org.mockito.ArgumentCaptor;
+import org.hamcrest.Matchers;
+import java.security.Principal;
 
 @RunWith(SpringRunner.class)
 public class PostControllerTest 
@@ -53,8 +58,15 @@ public class PostControllerTest
 
   private MockMvc mockMvc;
   
+  
+  @Mock
+  private Principal principal;
+    
   @Mock
   private PostService postService;
+  
+  @Mock
+  private UserService userService;
   
   @InjectMocks
   private PostController postController;
@@ -141,4 +153,56 @@ public class PostControllerTest
     .findAll(2);
     then(postService).shouldHaveNoMoreInteractions();
   }
+  
+  @Test
+  public void shouldShowPostForm() throws Exception 
+  {
+    //given
+    mockMvc
+    
+    //when
+    .perform(get("/post/add"))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("addPost"))
+    .andExpect(model().attributeExists("postForm"));
+  }
+  
+  @Test
+  public void shouldAddNewPost() throws Exception 
+  {     
+    //given    
+    User user = new User();
+    Post post = new Post();
+    given(postService.addPost(any(Post.class)))
+    .willReturn(post);
+    given(userService.findByUsername(anyString()))
+    .willReturn(user);
+    given(principal.getName())
+    .willReturn("User");
+    mockMvc
+    
+    //when
+    .perform(post("/post/add").with(csrf())
+    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+    .param("id", "1")
+    .param("message", "msg1"))
+    
+    //then
+    .andExpect(status().isFound())
+    .andExpect(redirectedUrl("/posts"));
+      
+    ArgumentCaptor<Post> postCaptor = ArgumentCaptor.forClass(Post.class);
+    then(postService)
+    .should(times(1))
+    .addPost(postCaptor.capture());
+    then(postService).shouldHaveNoMoreInteractions();
+ 
+    Post postArgument = postCaptor.getValue();
+    assertThat(postArgument.getMessage(), 
+      Matchers.is("msg1"));
+  }
+  
+
 }

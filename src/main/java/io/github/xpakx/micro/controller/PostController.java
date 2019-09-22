@@ -1,24 +1,30 @@
 package io.github.xpakx.micro.controller;
 
 import io.github.xpakx.micro.service.PostService;
+import io.github.xpakx.micro.service.UserService;
 import io.github.xpakx.micro.entity.Post;
+import io.github.xpakx.micro.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.data.domain.Page;
 
+import java.security.Principal;
 
 @Controller
 public class PostController
 {
   private PostService postService;
+  private UserService userService;
   
   @Autowired
-  public void setService(PostService postService)
+  public void setService(PostService postService, UserService userService)
   {
     this.postService = postService;
+    this.userService = userService;
   }
+
   
   @GetMapping({"/all", "/posts"})
   public String getAllPosts(Model model)
@@ -39,13 +45,35 @@ public class PostController
   @GetMapping("/post/add")
   public String addPost(Model model)
   {
-    return "test";
+    model.addAttribute("postForm", new Post());
+
+    return "addPost";
   }
   
   @PostMapping("/post/add")
-  public String addPost(@ModelAttribute("postForm") Post postForm)
-  {
-    return "test";
+  public String addPost(@ModelAttribute("postForm") Post postForm, Principal principal, Model model)
+  {    
+    User user = userService.findByUsername(principal.getName());
+    
+    if(user == null) 
+    {
+      //TODO ForbiddenException
+      return "error";
+    }
+    else 
+    {
+      postForm.setUser(user);
+    }
+    
+    if(postForm.getMessage() == null || postForm.getMessage().equals(""))
+    {
+      model.addAttribute("msg", "Message cannot be empty!");
+      return "addPost";
+    }
+    
+    postService.addPost(postForm);
+    
+    return "redirect:/posts";
   }
   
   @GetMapping("/post/{id}/edit")

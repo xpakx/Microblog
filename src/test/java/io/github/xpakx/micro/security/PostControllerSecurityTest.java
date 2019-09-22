@@ -26,11 +26,28 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.mockito.Mock;
+import org.mockito.InjectMocks;
+
+import io.github.xpakx.micro.service.PostService;
+import io.github.xpakx.micro.controller.PostController;
+import io.github.xpakx.micro.service.UserService;
+import io.github.xpakx.micro.entity.Post;
+import io.github.xpakx.micro.entity.User;
+import org.mockito.MockitoAnnotations;
+import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.*;
+import org.mockito.ArgumentCaptor;
+import org.hamcrest.Matchers;
+
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class SecurityTest 
+public class PostControllerSecurityTest 
 {
   private WebApplicationContext context;
 
@@ -41,172 +58,68 @@ public class SecurityTest
   }
 
   private MockMvc mockMvc;
-
+  
   @BeforeEach
   public void setup() 
   {
+    MockitoAnnotations.initMocks(this);
     mockMvc = MockMvcBuilders
             .webAppContextSetup(context)
             .apply(springSecurity())
             .build();
   }
-
+  
   @Test
-  public void adminUnavailableForAll() throws Exception 
+  public void postNewPostUnavailableForAll() throws Exception 
   {
     //given
     mockMvc
     
     //when
-    .perform(get("/admin"))
+    .perform(post("/post/add").with(csrf())
+    .param("id", "1")
+    .param("message", "msg1"))
     
     //then
     .andExpect(status().is3xxRedirection())
     .andExpect(redirectedUrlPattern("**/login"));
   }
-
+  
   @Test
-  @WithMockUser
-  public void adminUnavailableForUserNonAdmin() throws Exception 
-  {
-    //given
+  @WithMockUser(roles="USER", username="User")
+  public void shouldntAddEmptyPost() throws Exception 
+  {     
+    //given    
     mockMvc
     
     //when
-    .perform(get("/admin"))
+    .perform(post("/post/add").with(csrf())
+    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+    .param("id", "1")
+    .param("message", ""))
     
     //then
-    .andExpect(status().isForbidden());
-  }
-
-  @Test
-  @WithMockUser(roles="ADMIN")
-  public void adminAvailableForAdmin() throws Exception 
-  {
-    //given
-    mockMvc
-    
-    //when
-    .perform(get("/admin"))
-    
-    //then
-    .andExpect(status().isOk());
-  }
-
-  @Test
-  public void loginAvailableForAll() throws Exception 
-  {
-    //given
-    mockMvc
-    
-    //when
-    .perform(get("/login"))
-    
-    //then
-    .andExpect(status().isOk());
+    .andExpect(status().isOk())
+    .andExpect(view().name("addPost"))
+    .andExpect(model().attributeExists("msg"));
   }
   
   @Test
-  public void mainAvailableForAll() throws Exception 
-  {
-    //given
+  @WithMockUser(roles="USER", username="User")
+  public void shouldAddNewPost() throws Exception 
+  {     
+    //given    
     mockMvc
     
     //when
-    .perform(get("/"))
-    
-    //then
-    .andExpect(status().isOk());
-  }
-  
-  
-  @Test
-  public void userCanLog() throws Exception 
-  {
-  
-    //given
-    mockMvc
-    
-    //when
-    .perform(formLogin().user("admin@gmail.com").password("aaaaaa"))
+    .perform(post("/post/add").with(csrf())
+    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+    .param("id", "1")
+    .param("message", "msg1"))
     
     //then
     .andExpect(status().isFound())
-    .andExpect(redirectedUrl("/home"))
-    .andExpect(authenticated().withUsername("Admin"));
-
-
-    //given
-    mockMvc
-    
-    //when
-    .perform(logout())
-    
-    //then
-    .andExpect(status().isFound())
-    .andExpect(redirectedUrl("/login?logout"));
-  }
-  
-  
-  @Test
-  public void invalidLoginDenied() throws Exception 
-  {
-    //given
-    mockMvc
-    
-    //when
-    .perform(formLogin().user("user").password("bbbbbb"))
-    
-    
-    //then
-    .andExpect(status().isFound())
-    .andExpect(redirectedUrl("/login?error"))
-    .andExpect(unauthenticated());
-  }
-  
-  @Test
-  public void postsAvailableForAll() throws Exception 
-  {
-    //given
-    mockMvc
-    
-    //when
-    .perform(get("/posts"))
-    
-    //then
-    .andExpect(status().isOk());
-    
-    //given
-    mockMvc
-    
-    //when
-    .perform(get("/posts/2"))
-    
-    //then
-    .andExpect(status().isOk());
-    
-    //given
-    mockMvc
-    
-    //when
-    .perform(get("/all"))
-    
-    //then
-    .andExpect(status().isOk());
-  }
-  
-  @Test
-  public void getNewPostUnavailableForAll() throws Exception 
-  {
-    //given
-    mockMvc
-    
-    //when
-    .perform(get("/post/add"))
-    
-    //then
-    .andExpect(status().is3xxRedirection())
-    .andExpect(redirectedUrlPattern("**/login"));
+    .andExpect(redirectedUrl("/posts"));
   }
 
 }

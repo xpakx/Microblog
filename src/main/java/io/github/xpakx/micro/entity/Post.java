@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 @Data
 public class Post
@@ -22,6 +24,7 @@ public class Post
   private Integer id;
   
   @Column(nullable = false)
+  @NotEmpty
   private String message;
 
 

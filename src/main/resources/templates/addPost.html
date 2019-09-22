@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin</title>
+</head>
+<body>
+  <form action="home" th:action="@{/post/add}" method="post">
+						<div>
+							<input type="text" class="form-control" name="message"
+								placeholder="Message" /> 
+						</div>
+						
+								<button type="submit">Send</button>
+						</div>
+
+    <div>
+								<div th:if="${msg!=null}">
+									<p>
+										<span th:text="${msg}"></span>
+									</p>
+								</div>
+        
+          
+								<div th:if="${param.error}">
+									<p>
+										<span>Invalid message.</span>
+									</p>
+								</div>
+							</div>
+							
+
+</form>
+</body>
+</html>
