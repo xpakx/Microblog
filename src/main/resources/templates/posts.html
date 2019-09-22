@@ -5,6 +5,13 @@
 <title>Main</title>
 </head>
 <body>
- TEST
+
+  <div th:each="post : ${posts}">
+    <div th:text="${post.user.username}">Text ...</div>
+    <div th:text="${post.message}">Text ...</div>
+    <a th:href="@{'/post/' + ${post.id}}">→</a>
+    <hr>
+  </div>
+           
 </body>
 </html>
