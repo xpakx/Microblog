@@ -43,7 +43,10 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.data.domain.Page;
 import org.mockito.ArgumentCaptor;
 import org.hamcrest.Matchers;
+
 import java.security.Principal;
+import org.springframework.ui.Model;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 @RunWith(SpringRunner.class)
 public class PostControllerTest 
@@ -58,10 +61,6 @@ public class PostControllerTest
 
   private MockMvc mockMvc;
   
-  
-  @Mock
-  private Principal principal;
-    
   @Mock
   private PostService postService;
   
@@ -85,6 +84,15 @@ public class PostControllerTest
             .setViewResolvers(viewResolver)
             .build();
   }
+  
+  Principal principal = new Principal() 
+  {
+    @Override
+    public String getName() 
+    {
+      return "User";
+    }
+  };
   
   @Test
   public void controllerGetsPostsFromService() throws Exception 
@@ -179,15 +187,14 @@ public class PostControllerTest
     .willReturn(post);
     given(userService.findByUsername(anyString()))
     .willReturn(user);
-    given(principal.getName())
-    .willReturn("User");
     mockMvc
     
     //when
     .perform(post("/post/add").with(csrf())
     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
     .param("id", "1")
-    .param("message", "msg1"))
+    .param("message", "msg1")
+    .principal(principal))
     
     //then
     .andExpect(status().isFound())
@@ -204,5 +211,39 @@ public class PostControllerTest
       Matchers.is("msg1"));
   }
   
+  @Test
+  public void shouldntAddEmptyPost() throws Exception 
+  {     
+    //given    
+    User user = new User();
+    Post post = new Post();
+    given(postService.addPost(any(Post.class)))
+    .willReturn(post);
+    given(userService.findByUsername(anyString()))
+    .willReturn(user);
+    mockMvc
+    
+    //when
+    .perform(post("/post/add").with(csrf())
+    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+    .param("id", "1")
+    .param("message", "")
+    .principal(principal))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("addPost"))
+    .andExpect(model().attributeExists("msg"));
+      
+    then(userService)
+    .should(times(1))
+    .findByUsername(anyString());
+    then(userService).shouldHaveNoMoreInteractions();
+    
+    then(postService).shouldHaveZeroInteractions();
+  }
+  
 
 }
+
+
