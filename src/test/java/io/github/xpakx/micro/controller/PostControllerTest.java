@@ -47,6 +47,8 @@ import org.hamcrest.Matchers;
 import java.security.Principal;
 import org.springframework.ui.Model;
 import org.springframework.security.test.context.support.WithUserDetails;
+import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.UserUnauthorized;
 
 @RunWith(SpringRunner.class)
 public class PostControllerTest 
@@ -264,6 +266,115 @@ public class PostControllerTest
     .findById(2);
     then(userService).shouldHaveNoMoreInteractions();
   }
+  
+  @Test
+  public void shouldDeletePostIfAuthorRequested() throws Exception
+  {
+    //given
+    User user = new User();
+    user.setId(1);
+    user.setUsername("User");
+    Post post = new Post();
+    post.setUser(user);
+    post.setId(1);
+    given(userService.findByUsername(anyString()))
+    .willReturn(user);
+    
+    
+    mockMvc
+    
+    //when
+    .perform(post("/post/1/delete").with(csrf())
+    .principal(principal))
+    
+    //then
+    .andExpect(status().isFound())
+    .andExpect(redirectedUrl("/posts"));
+    
+    then(userService)
+    .should(times(1))
+    .findByUsername("User");
+    then(userService).shouldHaveNoMoreInteractions();
+    
+    then(postService)
+    .should(times(1))
+    .deletePost(1,1);
+    then(postService).shouldHaveNoMoreInteractions();
+  } 
+  
+  @Test
+  public void shouldntDeletePostIfNotFound() throws Exception
+  {
+    //given
+    User user = new User();
+    user.setId(1);
+    user.setUsername("User");
+    Post post = new Post();
+    post.setUser(user);
+    post.setId(1);
+    willThrow(new UserNotFound("")).given(postService).deletePost(anyInt(), anyInt());
+    given(userService.findByUsername(anyString()))
+    .willReturn(user);
+    
+    
+    mockMvc
+    
+    //when
+    .perform(post("/post/1/delete").with(csrf())
+    .principal(principal))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("delete"))
+    .andExpect(model().attributeExists("msg"));
+    
+    then(userService)
+    .should(times(1))
+    .findByUsername("User");
+    then(userService).shouldHaveNoMoreInteractions();
+    
+    then(postService)
+    .should(times(1))
+    .deletePost(1,1);
+    then(postService).shouldHaveNoMoreInteractions();
+  } 
+  
+  @Test
+  public void shouldntDeletePostIfAnyoneRequested() throws Exception
+  {
+    //given
+    User user = new User();
+    user.setId(1);
+    user.setUsername("User");
+    Post post = new Post();
+    post.setUser(user);
+    post.setId(1);
+    
+    willThrow(new UserUnauthorized(""))
+    .given(postService).deletePost(anyInt(), anyInt());
+    given(userService.findByUsername(anyString()))
+    .willReturn(user);
+    
+    
+    mockMvc
+    
+    //when
+    .perform(post("/post/1/delete").with(csrf())
+    .principal(principal))
+    
+    //then
+    .andExpect(status().isForbidden());
+    
+    then(userService)
+    .should(times(1))
+    .findByUsername("User");
+    then(userService).shouldHaveNoMoreInteractions();
+    
+    then(postService)
+    .should(times(1))
+    .deletePost(1,1);
+    then(postService).shouldHaveNoMoreInteractions();
+  } 
 
 }
 

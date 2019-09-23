@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.data.domain.Page;
+import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.UserUnauthorized;
+import io.github.xpakx.micro.error.ForbiddenException;
 
 import java.security.Principal;
 
@@ -51,14 +54,13 @@ public class PostController
   }
   
   @PostMapping("/post/add")
-  public String addPost(@ModelAttribute("postForm") Post postForm, Principal principal, Model model)
+  public String addPost(@ModelAttribute("postForm") Post postForm, Principal principal, Model model) throws ForbiddenException
   {    
     User user = userService.findByUsername(principal.getName());
     
     if(user == null) 
     {
-      //TODO ForbiddenException
-      return "error";
+      throw new ForbiddenException();
     }
     else 
     {
@@ -97,9 +99,29 @@ public class PostController
   }
   
   @PostMapping("/post/{id}/delete")
-  public String updatePost(@PathVariable Integer id)
+  public String deletePost(@PathVariable Integer id, Model model, Principal principal)
   {
-    return "test";
+    User user = userService.findByUsername(principal.getName());
+    
+    if(user == null) 
+    {
+      throw new ForbiddenException();
+    }
+    
+    try
+    {
+      postService.deletePost(id, user.getId());
+    }
+    catch(UserNotFound e)
+    {
+      model.addAttribute("msg", "Post not found!");
+      return "delete";
+    }
+    catch(UserUnauthorized e)
+    {
+      throw new ForbiddenException();
+    }    
+    return "redirect:/posts";
   }
   
 }

@@ -12,6 +12,7 @@ import io.github.xpakx.micro.repository.PostRepository;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.User;
 import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.UserUnauthorized;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 
@@ -250,4 +251,44 @@ public class PostServiceTest
     assertEquals(pageableArgument.getPageNumber(), 0);
   }
   
+  @Test
+  public void serviceShouldDeletePostIfFound2() throws Exception
+  {
+    //given
+    given(postRepository.findById(anyInt()))
+    .willReturn(Optional.of(first));
+    
+    //when
+    postService.deletePost(1, 1);
+    
+    //then
+    then(postRepository)
+    .should(times(1))
+    .findById(1);
+    then(postRepository)
+    .should(times(1))
+    .delete(first);
+    then(postRepository).shouldHaveNoMoreInteractions();
+  }
+  
+  @Test
+  public void serviceShouldntDeletePostIfFoundUnauthorized() throws Exception
+  {
+    //given
+    given(postRepository.findById(anyInt()))
+    .willReturn(Optional.of(first));
+    
+    //when
+     assertThrows(UserUnauthorized.class, () ->
+      postService.deletePost(1, 2));
+    
+    //then
+    then(postRepository)
+    .should(times(1))
+    .findById(1);
+    then(postRepository)
+    .should(never())
+    .delete(first);
+    then(postRepository).shouldHaveNoMoreInteractions();
+  }
 }

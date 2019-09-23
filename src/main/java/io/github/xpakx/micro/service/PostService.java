@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.repository.PostRepository;
 import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.UserUnauthorized;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +35,15 @@ public class PostService
   {
     Optional<Post> post =  postRepository.findById(i);
     postRepository.delete(post.orElseThrow(() -> new UserNotFound("User not found!")));
+  }
+  
+  public void deletePost(Integer i, Integer userId) throws UserNotFound, UserUnauthorized
+  {
+    Optional<Post> post =  postRepository.findById(i);
+    Post postToDelete = post.orElseThrow(() -> new UserNotFound("User not found!"));
+    if(postToDelete.getUser().getId() != userId) 
+    {throw new UserUnauthorized("User unauthorized!");}
+    postRepository.delete(postToDelete);
   }
   
   public void updatePost(Integer i, Post post)
