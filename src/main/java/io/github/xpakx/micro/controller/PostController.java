@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import io.github.xpakx.micro.error.UserNotFound;
 import io.github.xpakx.micro.error.UserUnauthorized;
 import io.github.xpakx.micro.error.ForbiddenException;
+import java.util.stream.Collectors;
+
 
 import java.security.Principal;
 
@@ -108,19 +110,38 @@ public class PostController
       throw new ForbiddenException();
     }
     
-    try
+    
+    if(user.getRoles() != null && user.getRoles().stream()
+                              .map((role) -> role.getName()).collect(Collectors.toList())
+                              .contains("ROLE_MOD"))
     {
-      postService.deletePost(id, user.getId());
+      try
+      {
+        postService.deletePost(id);
+      }
+      catch(UserNotFound e)
+      {
+        model.addAttribute("msg", "Post not found!");
+        return "delete";
+      }
     }
-    catch(UserNotFound e)
-    {
-      model.addAttribute("msg", "Post not found!");
-      return "delete";
+    else
+    {    
+      try
+      {
+        postService.deletePost(id, user.getId());
+      }
+      catch(UserNotFound e)
+      {
+        model.addAttribute("msg", "Post not found!");
+        return "delete";
+      }
+      catch(UserUnauthorized e)
+      {
+        throw new ForbiddenException();
+      }    
     }
-    catch(UserUnauthorized e)
-    {
-      throw new ForbiddenException();
-    }    
+    
     return "redirect:/posts";
   }
   

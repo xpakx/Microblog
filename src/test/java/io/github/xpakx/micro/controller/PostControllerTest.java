@@ -33,6 +33,7 @@ import io.github.xpakx.micro.service.PostService;
 import io.github.xpakx.micro.service.UserService;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.User;
+import io.github.xpakx.micro.entity.UserRole;
 import org.mockito.MockitoAnnotations;
 import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.*;
@@ -49,6 +50,10 @@ import org.springframework.ui.Model;
 import org.springframework.security.test.context.support.WithUserDetails;
 import io.github.xpakx.micro.error.UserNotFound;
 import io.github.xpakx.micro.error.UserUnauthorized;
+
+import java.util.List;
+import java.util.ArrayList;
+
 
 @RunWith(SpringRunner.class)
 public class PostControllerTest 
@@ -373,6 +378,87 @@ public class PostControllerTest
     then(postService)
     .should(times(1))
     .deletePost(1,1);
+    then(postService).shouldHaveNoMoreInteractions();
+  } 
+  
+  @Test
+  public void shouldDeletePostIfModRequested() throws Exception
+  {
+    //given
+    User user = new User();
+    user.setId(1);
+    user.setUsername("User");
+    UserRole role = new UserRole();
+    role.setName("ROLE_MOD");
+    List<UserRole> roles = new ArrayList<>();
+    roles.add(role);
+    user.setRoles(roles);
+    Post post = new Post();
+    post.setUser(user);
+    post.setId(1);
+    given(userService.findByUsername(anyString()))
+    .willReturn(user);
+    
+    mockMvc
+    
+    //when
+    .perform(post("/post/1/delete").with(csrf())
+    .principal(principal))
+    
+    //then
+    .andExpect(status().isFound())
+    .andExpect(redirectedUrl("/posts"));
+    
+    then(userService)
+    .should(times(1))
+    .findByUsername("User");
+    then(userService).shouldHaveNoMoreInteractions();
+    
+    then(postService)
+    .should(times(1))
+    .deletePost(1);
+    then(postService).shouldHaveNoMoreInteractions();
+  } 
+  
+  @Test
+  public void shouldntDeletePostIfNotFoundMod() throws Exception
+  {
+    //given
+    User user = new User();
+    user.setId(1);
+    user.setUsername("User"); 
+    UserRole role = new UserRole();
+    role.setName("ROLE_MOD");
+    List<UserRole> roles = new ArrayList<>();
+    roles.add(role);
+    user.setRoles(roles);
+    Post post = new Post();
+    post.setUser(user);
+    post.setId(1);
+    willThrow(new UserNotFound("")).given(postService).deletePost(anyInt());
+    given(userService.findByUsername(anyString()))
+    .willReturn(user);
+    
+    
+    mockMvc
+    
+    //when
+    .perform(post("/post/1/delete").with(csrf())
+    .principal(principal))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("delete"))
+    .andExpect(model().attributeExists("msg"));
+    
+    then(userService)
+    .should(times(1))
+    .findByUsername("User");
+    then(userService).shouldHaveNoMoreInteractions();
+    
+    then(postService)
+    .should(times(1))
+    .deletePost(1);
     then(postService).shouldHaveNoMoreInteractions();
   } 
 
