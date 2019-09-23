@@ -243,6 +243,27 @@ public class PostControllerTest
     then(postService).shouldHaveZeroInteractions();
   }
   
+  @Test
+  public void shouldReturnPostById() throws Exception
+  {
+    //given
+    Post post = new Post();
+    given(postService.findById(anyInt()))
+    .willReturn(post);
+    mockMvc
+    
+    //when
+    .perform(get("/post/2"))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("post"))
+    .andExpect(model().attributeExists("post"));
+    then(postService)
+    .should(times(1))
+    .findById(2);
+    then(userService).shouldHaveNoMoreInteractions();
+  }
 
 }
 

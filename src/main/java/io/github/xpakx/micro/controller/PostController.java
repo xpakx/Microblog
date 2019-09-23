@@ -76,6 +76,14 @@ public class PostController
     return "redirect:/posts";
   }
   
+  @GetMapping("/post/{id}")
+  public String getPost(@PathVariable Integer id, Model model)
+  {
+    Post post = postService.findById(id);
+    model.addAttribute("post", post);
+    return "post";
+  }
+  
   @GetMapping("/post/{id}/edit")
   public String updatePost(@PathVariable Integer id, Model model)
   {
