@@ -435,10 +435,10 @@ public class PostControllerTest
     Post post = new Post();
     post.setUser(user);
     post.setId(1);
-    willThrow(new UserNotFound("")).given(postService).deletePost(anyInt());
+    willThrow(new UserNotFound(""))
+    .given(postService).deletePost(anyInt());
     given(userService.findByUsername(anyString()))
     .willReturn(user);
-    
     
     mockMvc
     
@@ -461,6 +461,61 @@ public class PostControllerTest
     .deletePost(1);
     then(postService).shouldHaveNoMoreInteractions();
   } 
+  
+  @Test
+  public void shouldShowEditPostForm() throws Exception 
+  {
+    //given
+    User user = new User();
+    user.setId(1);
+    user.setUsername("User");
+    Post post = new Post();
+    post.setUser(user);
+    post.setId(1);
+    post.setMessage("msg1");
+    given(postService.findById(anyInt()))
+    .willReturn(post);
+    
+    mockMvc
+    
+    //when
+    .perform(get("/post/1/edit"))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("editPost"))
+    .andExpect(model().attributeExists("post"));
+    
+    then(postService)
+    .should(times(1))
+    .findById(1);
+    then(postService).shouldHaveNoMoreInteractions();
+  }
+  
+  
+  @Test
+  public void shouldShowEditPostErrorIfPostNotFound() throws Exception 
+  {
+    //given
+    given(postService.findById(anyInt()))
+    .willReturn(null);
+    
+    mockMvc
+    
+    //when
+    .perform(get("/post/1/edit"))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("editPost"))
+    .andExpect(model().attributeExists("err"))
+    .andExpect(model().attributeExists("msg"));
+    
+    then(postService)
+    .should(times(1))
+    .findById(1);
+    then(postService).shouldHaveNoMoreInteractions();
+  }
 
 }
 

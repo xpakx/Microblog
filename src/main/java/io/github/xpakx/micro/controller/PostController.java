@@ -35,7 +35,7 @@ public class PostController
   public String getAllPosts(Model model)
   {
     Page<Post> posts = postService.findAll(0);
-    model.addAttribute("posts", posts);
+    model.addAttribute("posts", posts.getContent());
     return "posts";
   }
   
@@ -91,7 +91,14 @@ public class PostController
   @GetMapping("/post/{id}/edit")
   public String updatePost(@PathVariable Integer id, Model model)
   {
-    return "test";
+    Post post = postService.findById(id);
+    model.addAttribute("post", post);
+    if(post == null)
+    {
+      model.addAttribute("msg", "Post doesn't exist!");
+      model.addAttribute("err", true);
+    }
+    return "editPost";
   }
   
   @PostMapping("/post/{id}/edit")
