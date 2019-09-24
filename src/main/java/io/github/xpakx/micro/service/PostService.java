@@ -46,10 +46,20 @@ public class PostService
     postRepository.delete(postToDelete);
   }
   
-  public void updatePost(Integer i, Post post)
+  public void updatePost(Integer i, Post post) throws UserNotFound
   {
     Optional<Post> foundPost = postRepository.findById(i);
     Post fPost = foundPost.orElseThrow(() -> new UserNotFound("User not found!"));
+    fPost.setMessage(post.getMessage());
+    postRepository.save(fPost);
+  }
+  
+  public void updatePost(Integer i, Integer userId, Post post) throws UserNotFound, UserUnauthorized
+  {
+    Optional<Post> foundPost = postRepository.findById(i);
+    Post fPost = foundPost.orElseThrow(() -> new UserNotFound("User not found!"));
+    if(fPost.getUser().getId() != userId) 
+    {throw new UserUnauthorized("User unauthorized!");}
     fPost.setMessage(post.getMessage());
     postRepository.save(fPost);
   }

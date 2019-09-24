@@ -291,4 +291,65 @@ public class PostServiceTest
     .delete(first);
     then(postRepository).shouldHaveNoMoreInteractions();
   }
+  
+  
+  @Test
+  public void serviceShouldUpdatePostIfFound2() throws Exception
+  {
+    //given
+    given(postRepository.findById(anyInt()))
+    .willReturn(Optional.of(first));
+    
+    //when
+    postService.updatePost(1, 1, first);
+    
+    //then
+    then(postRepository)
+    .should(times(1))
+    .findById(1);
+    then(postRepository)
+    .should(times(1))
+    .save(first);
+    then(postRepository).shouldHaveNoMoreInteractions();
+  }
+  
+  @Test
+  public void serviceShouldThrowExceptionWhenTryToUpdatePostNotFound2()
+  {
+    //given
+    given(postRepository.findById(anyInt()))
+    .willReturn(Optional.empty());
+    
+    //???
+    assertThrows(UserNotFound.class, () ->
+      postService.updatePost(1, 1, first));
+    
+    //then
+    then(postRepository)
+    .should(times(1))
+    .findById(1);
+    then(postRepository).shouldHaveNoMoreInteractions();
+  }
+  
+  
+  @Test
+  public void serviceShouldntUpdatePostIfFoundUnauthorized() throws Exception
+  {
+    //given
+    given(postRepository.findById(anyInt()))
+    .willReturn(Optional.of(first));
+    
+    //when
+     assertThrows(UserUnauthorized.class, () ->
+      postService.updatePost(1, 2, first));
+    
+    //then
+    then(postRepository)
+    .should(times(1))
+    .findById(1);
+    then(postRepository)
+    .should(never())
+    .save(first);
+    then(postRepository).shouldHaveNoMoreInteractions();
+  }
 }

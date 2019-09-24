@@ -102,9 +102,56 @@ public class PostController
   }
   
   @PostMapping("/post/{id}/edit")
-  public String updatePost(@PathVariable Integer id, @ModelAttribute("postForm") Post postForm)
+  public String updatePost(@PathVariable Integer id, @ModelAttribute("postForm") Post postForm, Model model, Principal principal)
   {
-    return "test";
+  
+    User user = userService.findByUsername(principal.getName());
+    
+    if(user == null) 
+    {
+      throw new ForbiddenException();
+    }
+  
+    
+    if(postForm.getMessage() == null || postForm.getMessage().equals(""))
+    {
+      model.addAttribute("msg", "Message cannot be empty!");
+      return "addPost";
+    }
+    
+    if(user.getRoles() != null && user.getRoles().stream()
+                              .map((role) -> role.getName()).collect(Collectors.toList())
+                              .contains("ROLE_MOD"))
+    {
+      try
+      {
+        postService.updatePost(id, postForm);
+      }
+      catch(UserNotFound e)
+      {
+        model.addAttribute("msg", "Post not found!");
+        return "editPost";
+      }
+    }
+    else
+    {    
+      try
+      {
+        postService.updatePost(id, user.getId(), postForm);
+      }
+      catch(UserNotFound e)
+      {
+        model.addAttribute("msg", "Post not found!");
+        return "editPost";
+      }
+      catch(UserUnauthorized e)
+      {
+        throw new ForbiddenException();
+      }    
+    }
+    
+    
+    return "redirect:/posts";
   }
   
   @PostMapping("/post/{id}/delete")

@@ -5,6 +5,23 @@
 <title>Main</title>
 </head>
 <body>
-  TEST
+  <div th:if="${msg==null}">
+    <form action="home" th:action="@{/post/{id}/edit(id=${post.id})}" method="post">
+						<div>
+							<textarea class="form-control" name="message"
+								placeholder="Message" th:inline="text">[[${post.message}]]</textarea>
+						</div>
+						
+								<button type="submit">Send</button>
+						</div>
+    </div>
+    <div>
+								<div th:if="${msg!=null}">
+									<p>
+										<span th:text="${msg}"></span>
+									</p>
+								</div>
+							</div>
 </body>
 </html>
+

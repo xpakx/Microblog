@@ -516,7 +516,225 @@ public class PostControllerTest
     .findById(1);
     then(postService).shouldHaveNoMoreInteractions();
   }
-
+  
+  
+  @Test
+  public void shouldEditPostIfAuthorRequested() throws Exception
+  {
+    //given
+    User user = new User();
+    user.setId(1);
+    user.setUsername("User");
+    Post post = new Post();
+    post.setUser(user);
+    post.setId(1);
+    given(userService.findByUsername(anyString()))
+    .willReturn(user);
+    mockMvc
+    
+    //when
+    .perform(post("/post/1/edit").with(csrf())
+    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+    .param("id", "1")
+    .param("message", "msg1")
+    .principal(principal))
+    
+    //then
+    .andExpect(status().isFound())
+    .andExpect(redirectedUrl("/posts"));
+    
+    then(userService)
+    .should(times(1))
+    .findByUsername("User");
+    then(userService).shouldHaveNoMoreInteractions();
+    
+    ArgumentCaptor<Post> postCaptor = ArgumentCaptor.forClass(Post.class);
+    ArgumentCaptor<Integer> intCaptor = ArgumentCaptor.forClass(Integer.class);
+    ArgumentCaptor<Integer> int2Captor = ArgumentCaptor.forClass(Integer.class);
+    then(postService)
+    .should(times(1))
+    .updatePost(intCaptor.capture(), int2Captor.capture(), postCaptor.capture());
+    then(postService).shouldHaveNoMoreInteractions();
+ 
+    Post postArgument = postCaptor.getValue();
+    assertThat(postArgument.getMessage(), 
+      Matchers.is("msg1"));
+    assertThat(intCaptor.getValue(), Matchers.is(1));
+    assertThat(int2Captor.getValue(), Matchers.is(1));
+  } 
+  
+  @Test
+  public void shouldntEditPostIfNotFound() throws Exception
+  {
+    //given
+    User user = new User();
+    user.setId(1);
+    user.setUsername("User");
+    Post post = new Post();
+    post.setUser(user);
+    post.setId(1);
+    given(userService.findByUsername(anyString()))
+    .willReturn(user);
+    willThrow(new UserNotFound(""))
+    .given(postService).updatePost(anyInt(), anyInt(), any(Post.class));
+    mockMvc
+    
+    //when
+    .perform(post("/post/1/edit").with(csrf())
+    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+    .param("id", "1")
+    .param("message", "msg1")
+    .principal(principal))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("editPost"))
+    .andExpect(model().attributeExists("msg"));
+    
+    then(userService)
+    .should(times(1))
+    .findByUsername("User");
+    then(userService).shouldHaveNoMoreInteractions();
+    
+    then(postService)
+    .should(times(1))
+    .updatePost(anyInt(), anyInt(), any(Post.class));
+    then(postService).shouldHaveNoMoreInteractions();
+  } 
+  
+  
+  @Test
+  public void shouldntEditPostIfNotFoundMod() throws Exception
+  {
+    //given
+    User user = new User();
+    user.setId(1);
+    user.setUsername("User");
+    UserRole role = new UserRole();
+    role.setName("ROLE_MOD");
+    List<UserRole> roles = new ArrayList<>();
+    roles.add(role);
+    user.setRoles(roles);
+    Post post = new Post();
+    post.setUser(user);
+    post.setId(1);
+    given(userService.findByUsername(anyString()))
+    .willReturn(user);
+    willThrow(new UserNotFound(""))
+    .given(postService).updatePost(anyInt(), any(Post.class));
+    mockMvc
+    
+    //when
+    .perform(post("/post/1/edit").with(csrf())
+    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+    .param("id", "1")
+    .param("message", "msg1")
+    .principal(principal))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("editPost"))
+    .andExpect(model().attributeExists("msg"));
+    
+    then(userService)
+    .should(times(1))
+    .findByUsername("User");
+    then(userService).shouldHaveNoMoreInteractions();
+    
+    then(postService)
+    .should(times(1))
+    .updatePost(anyInt(), any(Post.class));
+    then(postService).shouldHaveNoMoreInteractions();
+  } 
+  
+  
+  @Test
+  public void shouldEditPostIfModRequested() throws Exception
+  {
+    //given
+    User user = new User();
+    user.setId(1);
+    user.setUsername("User");
+    UserRole role = new UserRole();
+    role.setName("ROLE_MOD");
+    List<UserRole> roles = new ArrayList<>();
+    roles.add(role);
+    user.setRoles(roles);
+    Post post = new Post();
+    post.setUser(user);
+    post.setId(1);
+    given(userService.findByUsername(anyString()))
+    .willReturn(user);
+    mockMvc
+    
+    //when
+    .perform(post("/post/1/edit").with(csrf())
+    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+    .param("id", "1")
+    .param("message", "msg1")
+    .principal(principal))
+    
+    //then
+    .andExpect(status().isFound())
+    .andExpect(redirectedUrl("/posts"));
+    
+    then(userService)
+    .should(times(1))
+    .findByUsername("User");
+    then(userService).shouldHaveNoMoreInteractions();
+    
+    ArgumentCaptor<Post> postCaptor = ArgumentCaptor.forClass(Post.class);
+    ArgumentCaptor<Integer> intCaptor = ArgumentCaptor.forClass(Integer.class);
+    then(postService)
+    .should(times(1))
+    .updatePost(intCaptor.capture(), postCaptor.capture());
+    then(postService).shouldHaveNoMoreInteractions();
+ 
+    Post postArgument = postCaptor.getValue();
+    assertThat(postArgument.getMessage(), 
+      Matchers.is("msg1"));
+    assertThat(intCaptor.getValue(), Matchers.is(1));
+  } 
+  
+@Test
+  public void shouldntEditPostIfAnyoneRequested() throws Exception
+  {
+    //given
+    User user = new User();
+    user.setId(1);
+    user.setUsername("User");
+    Post post = new Post();
+    post.setUser(user);
+    post.setId(1);
+    
+    willThrow(new UserUnauthorized(""))
+    .given(postService).updatePost(anyInt(), anyInt(), any(Post.class));
+    given(userService.findByUsername(anyString()))
+    .willReturn(user);
+    
+    
+    mockMvc
+    
+    //when
+    .perform(post("/post/1/edit").with(csrf())
+    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+    .param("id", "1")
+    .param("message", "msg1")
+    .principal(principal))
+    
+    //then
+    .andExpect(status().isForbidden());
+    
+    then(userService)
+    .should(times(1))
+    .findByUsername("User");
+    then(userService).shouldHaveNoMoreInteractions();
+    
+    then(postService)
+    .should(times(1))
+    .updatePost(anyInt(), anyInt(), any(Post.class));
+    then(postService).shouldHaveNoMoreInteractions();
+  } 
 }
 
 
