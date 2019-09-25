@@ -289,7 +289,7 @@ public class PostControllerTest
     mockMvc
     
     //when
-    .perform(post("/post/1/delete").with(csrf())
+    .perform(get("/post/1/delete")
     .principal(principal))
     
     //then
@@ -325,7 +325,7 @@ public class PostControllerTest
     mockMvc
     
     //when
-    .perform(post("/post/1/delete").with(csrf())
+    .perform(get("/post/1/delete")
     .principal(principal))
     
     //then
@@ -364,7 +364,7 @@ public class PostControllerTest
     mockMvc
     
     //when
-    .perform(post("/post/1/delete").with(csrf())
+    .perform(get("/post/1/delete")
     .principal(principal))
     
     //then
@@ -402,7 +402,7 @@ public class PostControllerTest
     mockMvc
     
     //when
-    .perform(post("/post/1/delete").with(csrf())
+    .perform(get("/post/1/delete")
     .principal(principal))
     
     //then
@@ -443,7 +443,7 @@ public class PostControllerTest
     mockMvc
     
     //when
-    .perform(post("/post/1/delete").with(csrf())
+    .perform(get("/post/1/delete")
     .principal(principal))
     
     //then

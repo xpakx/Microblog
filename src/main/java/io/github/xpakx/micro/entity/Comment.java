@@ -24,7 +24,11 @@ public class Comment
   @Column(nullable = false)
   private String message;
 
-
+  @ManyToOne(fetch=FetchType.LAZY, optional=false)
+  @JoinColumn(name="user_id", nullable=false)
+  @OnDelete(action=OnDeleteAction.CASCADE)
+  private User user;  
+  
   @ManyToOne(fetch=FetchType.LAZY, optional=false)
   @JoinColumn(name="post_id", nullable=false)
   @OnDelete(action=OnDeleteAction.CASCADE)

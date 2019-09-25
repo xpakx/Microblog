@@ -1,16 +1,30 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
- xmlns:th="http://www.thymeleaf.org">
+ xmlns:th="http://www.thymeleaf.org"
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <title>Main</title>
+<link rel="stylesheet" th:href="@{/assets/css/style.css}" />
 </head>
 <body>
 
-  <div th:each="post : ${posts}">
-    <div th:text="${post.user.username}">Text ...</div>
-    <div th:text="${post.message}">Text ...</div>
-    <a th:href="@{'/post/' + ${post.id}}">→</a>
-    <hr>
+  <div class="post" th:each="post : ${posts}">
+    <h2 th:text="${post.user.username}">Text ...</h2>
+    <p class="postBody" th:text="${post.message}">Text ...</p>
+    
+    <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
+      <a th:href="@{/post/{id}/edit(id=${post.id})}">e</a>
+      <a th:href="@{/post/{id}/delete(id=${post.id})}">x</a> 
+    </div>
+    <div class="actions" th:if='${#authentication.getPrincipal().getUsername() == post.user.username}' sec:authorize="isAuthenticated() && !hasRole('ROLE_ADMIN')">
+      <a th:href="@{/post/{id}/edit(id=${post.id})}">e</a>
+      <a th:href="@{/post/{id}/delete(id=${post.id})}">x</a>      
+    </div>
+    
+    <a class="action" th:href="@{'/post/' + ${post.id}}">→</a> 
+     
+    
+    <hr />
   </div>
   
   

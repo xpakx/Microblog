@@ -15,4 +15,4 @@ insert into `user_role` (user_id, role_id) values (1,1), (1,2), (1,3), (2,3), (3
 
 INSERT INTO `post` (id, message, user_id) values (1, "test msg #1", 1), (2, "test msg #2", 2), (3, "test msg #3", 2);
 
-INSERT INTO `comment` (id, message, post_id) values (1, "test msg #4", 1), (2, "test msg #5", 1), (3, "test msg #6", 1);
+INSERT INTO `comment` (id, message, user_id, post_id) values (1, "test msg #4", 1, 1), (2, "test msg #5", 1, 1), (3, "test msg #6", 2, 1);

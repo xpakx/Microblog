@@ -29,25 +29,15 @@
 						</div>
       
       <div>
-							<input type="password" class="form-control" name="confirmPassword"
+							<input type="password" class="form-control" th:field="*{confirmPassword}" name="confirmPassword"
 								placeholder="Confirm Password" /> 
+        <span th:if="${#fields.hasErrors('confirmPassword')}" class="help-block" th:errors="*{confirmPassword}"></span>
 						</div>
 						
 						<div>
 								<button type="submit">Register</button>
 						</div>
-						<div>
-								<div th:if="${param.error}">
-									<p>
-										<span>Invalid email and password.</span>
-									</p>
-								</div>
-								<div th:if="${msg!=null}">
-									<p>
-										<span th:text="${msg}"></span>
-									</p>
-								</div>
-							</div>
+						
 
 </form>
 </body>
