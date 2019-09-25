@@ -12,7 +12,7 @@ import io.github.xpakx.micro.entity.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletException;
 import javax.validation.Valid;
-
+import org.springframework.validation.BindingResult;
 
 @Controller
 public class UserController
@@ -34,28 +34,37 @@ public class UserController
   }
   
   @PostMapping("register")
-  public String registration(@Valid @ModelAttribute("userForm") User userForm, Model model, HttpServletRequest request)
+  public String registration(@Valid @ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model)
   {
+  
+    
     if(!userForm.getPassword().equals(userForm.getConfirmPassword()))
     {
-      model.addAttribute("userForm", userForm);
-      model.addAttribute("msg", "Passwords specified must be identical!");
-      return "register";
+      bindingResult.rejectValue("confirmPassword", "error.userForm", "Passwords specified must be identical!");
     }
+    
     User user = userService.findByUsername(userForm.getUsername());
     if(user != null)
     {
-      model.addAttribute("userForm", userForm);
-      model.addAttribute("msg", "User with specified username exists!");
-      return "register";
+      bindingResult.rejectValue("username", "error.userForm", "User with specified username exists!");
     }
+    
     user = userService.findByEmail(userForm.getEmail());
     if(user != null)
     {
-      model.addAttribute("userForm", userForm);
-      model.addAttribute("msg", "User with specified email exists!");
-      return "register";
+      bindingResult.rejectValue("email", "error.userForm", "User with specified email exists!");
     }
+    
+    
+    if (bindingResult.hasErrors()) 
+    {
+       return "register";
+    }
+    
+    
+    
+    
+    
     
     userForm.setId(null);
     

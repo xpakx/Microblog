@@ -5,19 +5,29 @@
 <title>Login</title>
 </head>
 <body>
- <form action="home" th:action="@{/register}" method="post">
+
+
+
+ <form action="home" th:action="@{/register}" th:object="${userForm}" method="post">
       <div>
-							<input type="text" class="form-control" name="username"
-								placeholder="Username" /> 
+        <input type="text" class="form-control" th:field="*{username}" name="username"
+								  placeholder="Username" />
+        <span th:if="${#fields.hasErrors('username')}" class="help-block" th:errors="*{username}"></span>
+     </div>
+
 						</div>
 						<div>
-							<input type="email" class="form-control" name="email"
+							<input type="email" class="form-control" th:field="*{email}" name="email"
 								placeholder="Email" /> 
+        <span th:if="${#fields.hasErrors('email')}" class="help-block" th:errors="*{email}"></span>
 						</div>
+      
 						<div>
-							<input type="password" class="form-control" name="password"
+							<input type="password" class="form-control" th:field="*{password}"  name="password"
 								placeholder="Password" /> 
+        <span th:if="${#fields.hasErrors('password')}" class="help-block" th:errors="*{password}"></span>
 						</div>
+      
       <div>
 							<input type="password" class="form-control" name="confirmPassword"
 								placeholder="Confirm Password" /> 

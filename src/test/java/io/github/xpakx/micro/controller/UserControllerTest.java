@@ -134,11 +134,12 @@ public class UserControllerTest
     .param("id", "1")
     .param("username", "Test")
     .param("email", "test@example.com")
-    .param("password", "test")
-    .param("confirmPassword", "test"))
+    .param("password", "testtest")
+    .param("confirmPassword", "testtest"))
     
     //then
     .andExpect(status().isFound())
+    .andExpect(model().hasNoErrors())
     .andExpect(redirectedUrl("/login"));
       
     ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
@@ -156,7 +157,7 @@ public class UserControllerTest
     User userArgument = userCaptor.getValue();
     assertThat(userArgument.getUsername(), is("Test"));
     assertThat(userArgument.getEmail(), is("test@example.com"));
-    assertThat(userArgument.getPassword(), is("test"));
+    assertThat(userArgument.getPassword(), is("testtest"));
     assertNull(userArgument.getId());
   }
   
@@ -177,13 +178,13 @@ public class UserControllerTest
     .param("id", "1")
     .param("username", "Test")
     .param("email", "test@example.com")
-    .param("password", "test")
-    .param("confirmPassword", "test"))
+    .param("password", "testtest")
+    .param("confirmPassword", "testtest"))
     
     //then
     .andExpect(status().isOk())
     .andExpect(view().name("register"))
-    .andExpect(model().attributeExists("msg"));
+    .andExpect(model().attributeHasFieldErrors("userForm", "username"));
       
     ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
     
@@ -209,13 +210,13 @@ public class UserControllerTest
     .param("id", "1")
     .param("username", "Test")
     .param("email", "test@example.com")
-    .param("password", "test")
-    .param("confirmPassword", "test"))
+    .param("password", "testtest")
+    .param("confirmPassword", "testtest"))
     
     //then
     .andExpect(status().isOk())
     .andExpect(view().name("register"))
-    .andExpect(model().attributeExists("msg"));
+    .andExpect(model().attributeHasFieldErrors("userForm", "email"));
       
     ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
     
@@ -240,13 +241,13 @@ public class UserControllerTest
     .param("id", "1")
     .param("username", "Test")
     .param("email", "test@example.com")
-    .param("password", "test")
-    .param("confirmPassword", "test2"))
+    .param("password", "testtest")
+    .param("confirmPassword", "testtest2"))
     
     //then
     .andExpect(status().isOk())
     .andExpect(view().name("register"))
-    .andExpect(model().attributeExists("msg"));
+    .andExpect(model().attributeHasFieldErrors("userForm", "confirmPassword"));
       
     ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
     
