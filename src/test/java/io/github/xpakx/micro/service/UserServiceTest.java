@@ -9,8 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import io.github.xpakx.micro.repository.UserRepository;
+import io.github.xpakx.micro.repository.UserRoleRepository;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.User;
+import io.github.xpakx.micro.entity.UserRole;
 import io.github.xpakx.micro.error.UserNotFound;
 import io.github.xpakx.micro.error.UserUnauthorized;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.mockito.ArgumentCaptor;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import java.util.List;
 import java.util.ArrayList;
@@ -36,6 +40,12 @@ public class UserServiceTest
 
   @Mock
   private UserRepository userRepository;
+  
+  @Mock
+  private UserRoleRepository roleRepository;
+  
+  @Mock
+  private PasswordEncoder encoder;
   
   @InjectMocks
   private UserService userService;
@@ -131,7 +141,12 @@ public class UserServiceTest
     User user = new User();
     user.setPassword("abc");
     user.setUsername("User");
-    
+    UserRole role = new UserRole();
+    role.setName("ROLE_USER");
+    given(roleRepository.findByName("ROLE_USER"))
+    .willReturn(Optional.of(role));
+    given(encoder.encode(anyString()))
+    .willReturn("hash");
     //when
     userService.save(user);
     
@@ -146,6 +161,7 @@ public class UserServiceTest
     assertThat(userArgument.getRoles(), hasSize(1));
     assertThat(userArgument.getRoles().get(0).getName(), is("ROLE_USER"));
     assertThat(userArgument.getPassword(), not(is("abc")));
+    assertThat(userArgument.getPassword(), is("hash"));
     
   }
   
