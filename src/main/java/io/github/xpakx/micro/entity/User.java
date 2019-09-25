@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.Transient;
 
 import java.util.List;
 
@@ -38,6 +39,9 @@ public class User
   @NotEmpty
   @Size(min=6)
   private String password;
+  
+  @Transient
+  private String confirmPassword;
   
   @ManyToMany(cascade=CascadeType.MERGE)
   @JoinTable(name="user_role", 
