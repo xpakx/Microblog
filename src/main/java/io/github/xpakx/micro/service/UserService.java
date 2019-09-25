@@ -33,12 +33,17 @@ public class UserService
     return userRepository.findById(i).orElse(null);
   }
   
-  public User findByUsername(String email)
+  public User findByUsername(String username)
   {
-    return userRepository.findByUsername(email).orElse(null);
+    return userRepository.findByUsername(username).orElse(null);
   }
   
-  public void save(User user)
+  public User findByEmail(String email)
+  {
+    return userRepository.findByEmail(email).orElse(null);
+  }
+  
+  public void save(User user) 
   {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     UserRole role = roleRepository.findByName("ROLE_USER").orElse(null);

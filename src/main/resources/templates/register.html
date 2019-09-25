@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Login</title>
+</head>
+<body>
+ <form action="home" th:action="@{/register}" method="post">
+      <div>
+							<input type="text" class="form-control" name="username"
+								placeholder="Username" /> 
+						</div>
+						<div>
+							<input type="email" class="form-control" name="email"
+								placeholder="Email" /> 
+						</div>
+						<div>
+							<input type="password" class="form-control" name="password"
+								placeholder="Password" /> 
+						</div>
+      <div>
+							<input type="password" class="form-control" name="confirmPassword"
+								placeholder="Confirm Password" /> 
+						</div>
+						
+						<div>
+								<button type="submit">Register</button>
+						</div>
+						<div>
+								<div th:if="${param.error}">
+									<p>
+										<span>Invalid email and password.</span>
+									</p>
+								</div>
+								<div th:if="${msg!=null}">
+									<p>
+										<span th:text="${msg}"></span>
+									</p>
+								</div>
+							</div>
+
+</form>
+</body>
+</html>
