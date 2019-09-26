@@ -13,6 +13,7 @@ import io.github.xpakx.micro.error.UserNotFound;
 import io.github.xpakx.micro.error.UserUnauthorized;
 import io.github.xpakx.micro.error.ForbiddenException;
 import java.util.stream.Collectors;
+import org.springframework.validation.BindingResult;
 
 
 import java.security.Principal;
@@ -56,7 +57,7 @@ public class PostController
   }
   
   @PostMapping("/post/add")
-  public String addPost(@ModelAttribute("postForm") Post postForm, Principal principal, Model model) throws ForbiddenException
+  public String addPost(@ModelAttribute("postForm") Post postForm, BindingResult bindingResult, Principal principal, Model model) throws ForbiddenException
   {    
     User user = userService.findByUsername(principal.getName());
     
@@ -71,7 +72,7 @@ public class PostController
     
     if(postForm.getMessage() == null || postForm.getMessage().equals(""))
     {
-      model.addAttribute("msg", "Message cannot be empty!");
+      bindingResult.rejectValue("message", "error.postForm", "Message cannot be empty!"); 
       return "addPost";
     }
     
@@ -102,7 +103,7 @@ public class PostController
   }
   
   @PostMapping("/post/{id}/edit")
-  public String updatePost(@PathVariable Integer id, @ModelAttribute("postForm") Post postForm, Model model, Principal principal)
+  public String updatePost(@PathVariable Integer id, @ModelAttribute("postForm") Post postForm, BindingResult bindingResult, Model model, Principal principal)
   {
   
     User user = userService.findByUsername(principal.getName());
@@ -111,13 +112,15 @@ public class PostController
     {
       throw new ForbiddenException();
     }
-  
+    
+    boolean flag = false;
     
     if(postForm.getMessage() == null || postForm.getMessage().equals(""))
     {
-      model.addAttribute("msg", "Message cannot be empty!");
-      return "addPost";
+      bindingResult.rejectValue("message", "error.postForm", "Message cannot be empty!"); 
+      flag = true;
     }
+    
     
     if(user.getRoles() != null && user.getRoles().stream()
                               .map((role) -> role.getName()).collect(Collectors.toList())
@@ -129,8 +132,8 @@ public class PostController
       }
       catch(UserNotFound e)
       {
-        model.addAttribute("msg", "Post not found!");
-        return "editPost";
+        bindingResult.rejectValue("message", "error.postForm", "Post not found!"); 
+        flag = true;
       }
     }
     else
@@ -141,13 +144,18 @@ public class PostController
       }
       catch(UserNotFound e)
       {
-        model.addAttribute("msg", "Post not found!");
-        return "editPost";
+        bindingResult.rejectValue("message", "error.postForm", "Post not found!"); 
+        flag = true;
       }
       catch(UserUnauthorized e)
       {
         throw new ForbiddenException();
       }    
+    }
+    
+    if(flag)
+    {
+      return "editPost";
     }
     
     

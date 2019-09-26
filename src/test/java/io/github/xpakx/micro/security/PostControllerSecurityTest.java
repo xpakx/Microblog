@@ -101,7 +101,7 @@ public class PostControllerSecurityTest
     //then
     .andExpect(status().isOk())
     .andExpect(view().name("addPost"))
-    .andExpect(model().attributeExists("msg"));
+    .andExpect(model().attributeHasFieldErrors("postForm", "message"));
   }
   
   @Test

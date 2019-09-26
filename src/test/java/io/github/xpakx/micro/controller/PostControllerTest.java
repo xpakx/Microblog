@@ -240,7 +240,7 @@ public class PostControllerTest
     //then
     .andExpect(status().isOk())
     .andExpect(view().name("addPost"))
-    .andExpect(model().attributeExists("msg"));
+    .andExpect(model().attributeHasFieldErrors("postForm", "message"));
       
     then(userService)
     .should(times(1))
@@ -589,7 +589,7 @@ public class PostControllerTest
     //then
     .andExpect(status().isOk())
     .andExpect(view().name("editPost"))
-    .andExpect(model().attributeExists("msg"));
+    .andExpect(model().attributeHasFieldErrors("postForm", "message"));
     
     then(userService)
     .should(times(1))
@@ -634,7 +634,7 @@ public class PostControllerTest
     //then
     .andExpect(status().isOk())
     .andExpect(view().name("editPost"))
-    .andExpect(model().attributeExists("msg"));
+    .andExpect(model().attributeHasFieldErrors("postForm", "message"));
     
     then(userService)
     .should(times(1))
@@ -696,7 +696,7 @@ public class PostControllerTest
     assertThat(intCaptor.getValue(), Matchers.is(1));
   } 
   
-@Test
+  @Test
   public void shouldntEditPostIfAnyoneRequested() throws Exception
   {
     //given
