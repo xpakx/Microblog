@@ -31,31 +31,36 @@ public class CommentService
     return commentRepository.findById(i).orElse(null);
   }
   
-  public void deleteComment(Integer i) 
+  public Integer deleteComment(Integer i) 
   {
     Optional<Comment> comment =  commentRepository.findById(i);
     Comment commentToDelete = comment.orElseThrow(() -> new UserNotFound("Comment not found!"));
+    Integer id = commentToDelete.getPost().getId();
     commentRepository.delete(commentToDelete);
+    return id;
   }
   
-  public void deleteComment(Integer i, Integer userId) 
+  public Integer deleteComment(Integer i, Integer userId) 
   {
     Optional<Comment> comment =  commentRepository.findById(i);
     Comment commentToDelete = comment.orElseThrow(() -> new UserNotFound("Comment not found!"));
+    Integer id = commentToDelete.getPost().getId();
     if(commentToDelete.getUser().getId() != userId) 
     {throw new UserUnauthorized("User unauthorized!");}
     commentRepository.delete(commentToDelete);
+    return id;
   }
   
-  public void updateComment(Integer i, Comment comment)
+  public Integer updateComment(Integer i, Comment comment)
   {
     Optional<Comment> foundComment = commentRepository.findById(i);
     Comment fComment = foundComment.orElseThrow(() -> new UserNotFound("Comment not found!"));
     fComment.setMessage(comment.getMessage());
     commentRepository.save(fComment);
+    return fComment.getPost().getId();
   }
   
-  public void updateComment(Integer i, Integer userId, Comment comment)
+  public Integer updateComment(Integer i, Integer userId, Comment comment)
   {
     Optional<Comment> foundComment = commentRepository.findById(i);
     Comment fComment = foundComment.orElseThrow(() -> new UserNotFound("Comment not found!"));
@@ -63,6 +68,7 @@ public class CommentService
     {throw new UserUnauthorized("User unauthorized!");}
     fComment.setMessage(comment.getMessage());
     commentRepository.save(fComment);
+    return fComment.getPost().getId();
   }
   
   public Comment addComment(Comment comment)

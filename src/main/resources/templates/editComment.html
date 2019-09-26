@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Main</title>
+</head>
+<body>
+  <div th:if="${msg==null}">
+    <form action="home" th:action="@{/comment/{id}/edit(id=${comment.id})}" method="post">
+						<div>
+							<textarea class="form-control" name="message"
+								placeholder="Message" th:inline="text">[[${comment.message}]]</textarea>
+						</div>
+						
+								<button type="submit">Send</button>
+						</div>
+    </div>
+    <div>
+								<div th:if="${msg!=null}">
+									<p>
+										<span th:text="${msg}"></span>
+									</p>
+								</div>
+							</div>
+</body>
+</html>
+

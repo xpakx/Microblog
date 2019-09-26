@@ -61,6 +61,7 @@ public class CommentServiceTest
     user.setUsername("User"); 
     user.setEmail("user@example.com");
     post = new Post();
+    post.setId(1);
     post.setUser(user);
     first = new Comment();
     first.setId(1); 
@@ -124,7 +125,7 @@ public class CommentServiceTest
     .willReturn(Optional.of(first));
     
     //when
-    commentService.deleteComment(1);
+    Integer result = commentService.deleteComment(1);
     
     //then
     then(commentRepository)
@@ -134,6 +135,7 @@ public class CommentServiceTest
     .should(times(1))
     .delete(first);
     then(commentRepository).shouldHaveNoMoreInteractions();
+    assertThat(result, Matchers.is(1));
   }
   
   @Test
@@ -162,7 +164,7 @@ public class CommentServiceTest
     .willReturn(Optional.of(first));
     
     //when
-    commentService.updateComment(1, first);
+    Integer result = commentService.updateComment(1, first);
     
     //then
     then(commentRepository)
@@ -172,6 +174,7 @@ public class CommentServiceTest
     .should(times(1))
     .save(first);
     then(commentRepository).shouldHaveNoMoreInteractions();
+    assertThat(result, Matchers.is(1));
   }
   
   @Test
@@ -219,7 +222,7 @@ public class CommentServiceTest
     .willReturn(Optional.of(first));
     
     //when
-    commentService.deleteComment(1, 1);
+    Integer result = commentService.deleteComment(1, 1);
     
     //then
     then(commentRepository)
@@ -229,6 +232,7 @@ public class CommentServiceTest
     .should(times(1))
     .delete(first);
     then(commentRepository).shouldHaveNoMoreInteractions();
+    assertThat(result, Matchers.is(1));
   }
   
   @Test
@@ -261,7 +265,7 @@ public class CommentServiceTest
     .willReturn(Optional.of(first));
     
     //when
-    commentService.updateComment(1, 1, first);
+    Integer result = commentService.updateComment(1, 1, first);
     
     //then
     then(commentRepository)
@@ -271,6 +275,7 @@ public class CommentServiceTest
     .should(times(1))
     .save(first);
     then(commentRepository).shouldHaveNoMoreInteractions();
+    assertThat(result, Matchers.is(1));
   }
   
   @Test
