@@ -1,7 +1,5 @@
 package io.github.xpakx.micro.security;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,19 +21,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter 
 {
   private UserDetailsService customUserDetailsService;
-
-  private DataSource dataSource;
   
   @Autowired
   public void setUserDetailsService(UserDetailsService customUserDetailsService) 
   {
     this.customUserDetailsService = customUserDetailsService;
-  }
-  
-  @Autowired
-  public void setDataSource(DataSource dataSource) 
-  {
-    this.dataSource = dataSource;
   }
  
   @Bean

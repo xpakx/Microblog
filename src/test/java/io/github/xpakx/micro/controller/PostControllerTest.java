@@ -34,6 +34,7 @@ import io.github.xpakx.micro.service.UserService;
 import io.github.xpakx.micro.service.CommentService;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.User;
+import io.github.xpakx.micro.entity.Comment;
 import io.github.xpakx.micro.entity.UserRole;
 import org.mockito.MockitoAnnotations;
 import static org.mockito.BDDMockito.*;
@@ -259,8 +260,12 @@ public class PostControllerTest
   {
     //given
     Post post = new Post();
+    post.setId(2);
+    Page<Comment> comments = Page.empty();
     given(postService.findById(anyInt()))
     .willReturn(post);
+    given(commentService.findAllByPostId(anyInt(), anyInt()))
+    .willReturn(comments);
     mockMvc
     
     //when
