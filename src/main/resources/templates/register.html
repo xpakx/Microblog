@@ -1,44 +1,43 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
  xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>Login</title>
+<head th:replace="layout :: common_header(~{::title})">
+<title>Microblog — Register</title>
 </head>
-<body>
+<body th:replace="layout :: common_body(~{::div})">
 
+<div>
 
-
- <form action="home" th:action="@{/register}" th:object="${userForm}" method="post">
+ <form class="form"action="home" th:action="@{/register}" th:object="${userForm}" method="post">
+   <div class="form-controls">
       <div>
-        <input type="text" class="form-control" th:field="*{username}" name="username"
+        <input type="text" class="form-control form-control-first" th:field="*{username}" name="username"
 								  placeholder="Username" />
         <span th:if="${#fields.hasErrors('username')}" class="help-block" th:errors="*{username}"></span>
      </div>
 
-						</div>
 						<div>
-							<input type="email" class="form-control" th:field="*{email}" name="email"
+							<input type="email" class="form-control form-control-middle" th:field="*{email}" name="email"
 								placeholder="Email" /> 
         <span th:if="${#fields.hasErrors('email')}" class="help-block" th:errors="*{email}"></span>
 						</div>
       
 						<div>
-							<input type="password" class="form-control" th:field="*{password}"  name="password"
+							<input type="password" class="form-control form-control-middle" th:field="*{password}"  name="password"
 								placeholder="Password" /> 
         <span th:if="${#fields.hasErrors('password')}" class="help-block" th:errors="*{password}"></span>
 						</div>
       
       <div>
-							<input type="password" class="form-control" th:field="*{confirmPassword}" name="confirmPassword"
+							<input type="password" class="form-control form-control-last" th:field="*{confirmPassword}" name="confirmPassword"
 								placeholder="Confirm Password" /> 
         <span th:if="${#fields.hasErrors('confirmPassword')}" class="help-block" th:errors="*{confirmPassword}"></span>
 						</div>
-						
-						<div>
+     </div>
 								<button type="submit">Register</button>
-						</div>
-						
 
-</form>
+     
+  </form>
+ </div>
 </body>
 </html>

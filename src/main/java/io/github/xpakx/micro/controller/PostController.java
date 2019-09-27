@@ -37,7 +37,7 @@ public class PostController
   }
 
   
-  @GetMapping({"/all", "/posts"})
+  @GetMapping({"/all", "/posts", "/home"})
   public String getAllPosts(Model model)
   {
     Page<Post> posts = postService.findAll(0);

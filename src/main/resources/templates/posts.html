@@ -9,7 +9,7 @@
 
 <body th:replace="layout :: common_body(~{::div})">
 <div>
-  <form class="add-post" action="home" sec:authorize="isAuthenticated()" th:action="@{/post/add}" method="post">
+  <form class="form" action="home" sec:authorize="isAuthenticated()" th:action="@{/post/add}" method="post">
 							 <textarea class="form-control" name="message"
 								placeholder="Message"></textarea>
 								<button class="button" type="submit">Send</button>
@@ -48,8 +48,6 @@
         </div>
   </div>
 </div>  
-  
-
-           
+            
 </body>
 </html>

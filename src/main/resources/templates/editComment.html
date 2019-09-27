@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
  xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>Main</title>
+<head th:replace="layout :: common_header(~{::title})">
+<title>Microblog — Edit Comment</title>
 </head>
-<body>
+<body th:replace="layout :: common_body(~{::div})">
+<div>
   <div th:if="${msg==null}">
-    <form action="home" th:action="@{/comment/{id}/edit(id=${comment.id})}" method="post">
+    <form class="form" action="home" th:action="@{/comment/{id}/edit(id=${comment.id})}" method="post">
 						<div>
 							<textarea class="form-control" name="message"
 								placeholder="Message" th:inline="text">[[${comment.message}]]</textarea>
@@ -22,6 +23,7 @@
 									</p>
 								</div>
 							</div>
+</div>
 </body>
 </html>
 

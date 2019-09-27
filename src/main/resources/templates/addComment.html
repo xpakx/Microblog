@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
  xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>Admin</title>
+<head th:replace="layout :: common_header(~{::title})">
+<title>Microblog — Add Comment</title>
 </head>
-<body>
-  <form action="home" th:action="@{/comment/add}" method="post">
+<body th:replace="layout :: common_body(~{::div})">
+<div>
+  <form class="form" action="home" th:action="@{/comment/add}" method="post">
 						<div>
 							<textarea class="form-control" name="message"
 								placeholder="Message"></textarea>
@@ -28,7 +29,7 @@
 									</p>
 								</div>
 							</div>
-							
+</div>							
 
 </form>
 </body>

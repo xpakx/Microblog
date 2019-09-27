@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
  xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>Login</title>
+<head th:replace="layout :: common_header(~{::title})">
+<title>Microblog — Login</title>
 </head>
-<body>
- <form action="home" th:action="@{/login}" method="post">
+<body th:replace="layout :: common_body(~{::div})">
+<div>
+ <form class="form" action="home" th:action="@{/login}" method="post">
+   <div class="form-controls">
 						<div>
-							<input type="email" class="form-control" name="username"
+							<input type="email" class="form-control form-control-first" name="username"
 								placeholder="Email" /> 
 						</div>
 						<div>
-							<input type="password" class="form-control" name="password"
+							<input type="password" class="form-control form-control-last" name="password"
 								placeholder="Password" /> 
 						</div>
-						
+				</div>		
 						<div>
 								<button type="submit">Login</button>
 						</div>
@@ -34,8 +36,9 @@
 										<span th:text="${msg}"></span>
 									</p>
 								</div>
-							</div>
-
+							
 </form>
+</div>
+
 </body>
 </html>
