@@ -2,12 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
  xmlns:th="http://www.thymeleaf.org"
  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-<title>Main</title>
-<link rel="stylesheet" th:href="@{/assets/css/style.css}" />
+ 
+<head th:replace="layout :: common_header(~{::title})">
+  <title>Microblog - Main</title>
 </head>
-<body>
 
+<body th:replace="layout :: common_body(~{::div})">
+<div>
   <form class="add-post" action="home" sec:authorize="isAuthenticated()" th:action="@{/post/add}" method="post">
 							 <textarea class="form-control" name="message"
 								placeholder="Message"></textarea>
@@ -46,7 +47,7 @@
           </div>
         </div>
   </div>
-  
+</div>  
   
 
            
