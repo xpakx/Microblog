@@ -12,24 +12,26 @@
 </head>
 
 <body th:fragment="common_body(div)">
-	
-	<div class="container">
 
-		<div th:replace="${div}">
-			<!-- Page Content -->
-		</div>
+<div class="main">	
+	  <div class="container">
 
-	</div>
+		  <div th:replace="${div}">
+			  <!-- Page Content -->
+		  </div>
+
+	  </div>
 
 
-	<div class="footer">
-		<h1>
-				Microblog
-		</h1>
-  <p>
-    ©2019 xpakx 
-  </p>
-	</div>
+	  <div class="footer">
+		  <h1>
+				  Microblog
+		  </h1>
+    <p>
+      ©2019 xpakx 
+    </p>
+  	</div>
+</div>
 
 </body>
 </html>

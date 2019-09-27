@@ -10,31 +10,28 @@
 
  <form class="form"action="home" th:action="@{/register}" th:object="${userForm}" method="post">
    <div class="form-controls">
-      <div>
-        <input type="text" class="form-control form-control-first" th:field="*{username}" name="username"
-								  placeholder="Username" />
+      <div class="control">
+        <input type="text" class="form-control form-control-first" th:classappend="${#fields.hasErrors('username')} ? has-error : ''" th:field="*{username}" name="username" placeholder="Username" />
         <span th:if="${#fields.hasErrors('username')}" class="help-block" th:errors="*{username}"></span>
-     </div>
+      </div>
 
-						<div>
-							<input type="email" class="form-control form-control-middle" th:field="*{email}" name="email"
+						<div class="control">
+							<input type="email" class="form-control form-control-middle" th:classappend="${#fields.hasErrors('email')} ? has-error : ''" th:field="*{email}" name="email"
 								placeholder="Email" /> 
         <span th:if="${#fields.hasErrors('email')}" class="help-block" th:errors="*{email}"></span>
 						</div>
       
-						<div>
-							<input type="password" class="form-control form-control-middle" th:field="*{password}"  name="password"
-								placeholder="Password" /> 
+						<div class="control">
+							<input type="password" class="form-control form-control-middle" th:classappend="${#fields.hasErrors('password')} ? has-error : ''" th:field="*{password}"  name="password"	placeholder="Password" /> 
         <span th:if="${#fields.hasErrors('password')}" class="help-block" th:errors="*{password}"></span>
 						</div>
       
-      <div>
-							<input type="password" class="form-control form-control-last" th:field="*{confirmPassword}" name="confirmPassword"
-								placeholder="Confirm Password" /> 
+      <div class="control">
+							<input type="password" class="form-control form-control-last" th:classappend="${#fields.hasErrors('confirmPassword')} ? has-error : ''" th:field="*{confirmPassword}" name="confirmPassword" placeholder="Confirm Password" /> 
         <span th:if="${#fields.hasErrors('confirmPassword')}" class="help-block" th:errors="*{confirmPassword}"></span>
 						</div>
      </div>
-								<button type="submit">Register</button>
+								<button class="register" type="submit">Register</button>
 
      
   </form>

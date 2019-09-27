@@ -39,6 +39,19 @@
           </div>
         </div>
   </div>
+  
+  
+  <div th:if="${post}">
+   <form  class="form" action="home" th:action="@{/post/{id}/comment/add(id=${post.id})}" sec:authorize="isAuthenticated()" method="post">
+						<div>
+							<textarea class="form-control" name="message"
+								placeholder="Message"></textarea>
+						</div>
+						
+								<button type="submit">Send</button>
+						</div>
+
+   </div>					
 </div>  
 </body>
 </html>
