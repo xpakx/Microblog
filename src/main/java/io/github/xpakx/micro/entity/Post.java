@@ -14,6 +14,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import javax.persistence.Transient;
+import java.util.List;
 
 @Entity
 @Data
@@ -32,4 +34,7 @@ public class Post
   @JoinColumn(name="user_id", nullable=false)
   @OnDelete(action=OnDeleteAction.CASCADE)
   private User user;  
+  
+  @Transient
+  private List<Comment> comments;
 }

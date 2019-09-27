@@ -3,11 +3,41 @@
  xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Main</title>
+<link rel="stylesheet" th:href="@{/assets/css/style.css}" />
 </head>
 <body>
-  <div th:if="${post}">
-    <div th:text="${post.user.username}">Text ...</div>
-    <div th:text="${post.message}">Text ...</div>
+  
+  <div class="post" th:if="${post}">
+    <h2 th:text="${post.user.username}">Text ...</h2>
+    <p class="postBody" th:text="${post.message}">Text ...</p>
+    
+    <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
+      <a th:href="@{/post/{id}/edit(id=${post.id})}">e</a>
+      <a th:href="@{/post/{id}/delete(id=${post.id})}">x</a> 
+    </div>
+    <div class="actions" th:if='${#authentication.getPrincipal().getUsername() == post.user.username}' sec:authorize="isAuthenticated() && !hasRole('ROLE_ADMIN')">
+      <a th:href="@{/post/{id}/edit(id=${post.id})}">e</a>
+      <a th:href="@{/post/{id}/delete(id=${post.id})}">x</a>      
+    </div>
+    
+    <a class="action" th:href="@{'/post/' + ${post.id}}">→</a> 
+     
+     
+    <hr />
+    
+        <div th:each="i : ${#numbers.sequence(post.comments.size() - 1, 0, -1)}"
+     th:with="comment=${post.comments[i]}">
+          <h2 th:text="${comment.user.username}">Text ...</h2>
+          <p class="postBody" th:text="${comment.message}">Text ...</p>
+          <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:href="@{/comment/{id}/edit(id=${comment.id})}">e</a>
+            <a th:href="@{/comment/{id}/delete(id=${comment.id})}">x</a> 
+          </div>
+          <div class="actions" th:if='${#authentication.getPrincipal().getUsername() == comment.user.username}' sec:authorize="isAuthenticated() && !hasRole('ROLE_ADMIN')">
+            <a th:href="@{/comment/{id}/edit(id=${comment.id})}">e</a>
+            <a th:href="@{/comment/{id}/delete(id=${comment.id})}">x</a>      
+          </div>
+        </div>
   </div>
 </body>
 </html>

@@ -31,6 +31,7 @@ import org.mockito.InjectMocks;
 
 import io.github.xpakx.micro.service.PostService;
 import io.github.xpakx.micro.service.UserService;
+import io.github.xpakx.micro.service.CommentService;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.User;
 import io.github.xpakx.micro.entity.UserRole;
@@ -73,6 +74,9 @@ public class PostControllerTest
   
   @Mock
   private UserService userService;
+  
+  @Mock
+  private CommentService commentService;
   
   @InjectMocks
   private PostController postController;

@@ -8,23 +8,43 @@
 </head>
 <body>
 
+  <form class="add-post" action="home" sec:authorize="isAuthenticated()" th:action="@{/post/add}" method="post">
+							 <textarea class="form-control" name="message"
+								placeholder="Message"></textarea>
+								<button class="button" type="submit">Send</button>
+  </form>
+ 
+  
   <div class="post" th:each="post : ${posts}">
     <h2 th:text="${post.user.username}">Text ...</h2>
     <p class="postBody" th:text="${post.message}">Text ...</p>
     
     <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
-      <a th:href="@{/post/{id}/edit(id=${post.id})}">e</a>
-      <a th:href="@{/post/{id}/delete(id=${post.id})}">x</a> 
+      <a class="button" th:href="@{/post/{id}/edit(id=${post.id})}">edit</a>
+      <a class="button" th:href="@{/post/{id}/delete(id=${post.id})}">delete</a> 
     </div>
     <div class="actions" th:if='${#authentication.getPrincipal().getUsername() == post.user.username}' sec:authorize="isAuthenticated() && !hasRole('ROLE_ADMIN')">
-      <a th:href="@{/post/{id}/edit(id=${post.id})}">e</a>
-      <a th:href="@{/post/{id}/delete(id=${post.id})}">x</a>      
+      <a class="button" th:href="@{/post/{id}/edit(id=${post.id})}">edit</a>
+      <a class="button" th:href="@{/post/{id}/delete(id=${post.id})}">delete</a>      
     </div>
     
-    <a class="action" th:href="@{'/post/' + ${post.id}}">→</a> 
+    <a class="action button" th:href="@{'/post/' + ${post.id}}">→</a> 
      
-    
     <hr />
+    
+        <div th:each="i : ${#numbers.sequence(post.comments.size() - 1, 0, -1)}"
+     th:with="comment=${post.comments[i]}">
+          <h2 th:text="${comment.user.username}">Text ...</h2>
+          <p class="postBody" th:text="${comment.message}">Text ...</p>
+          <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a class="button" th:href="@{/comment/{id}/edit(id=${comment.id})}">e</a>
+            <a class="button" th:href="@{/comment/{id}/delete(id=${comment.id})}">x</a> 
+          </div>
+          <div class="actions" th:if='${#authentication.getPrincipal().getUsername() == comment.user.username}' sec:authorize="isAuthenticated() && !hasRole('ROLE_ADMIN')">
+            <a class="button" th:href="@{/comment/{id}/edit(id=${comment.id})}">edit</a>
+            <a class="button" th:href="@{/comment/{id}/delete(id=${comment.id})}">delete</a>      
+          </div>
+        </div>
   </div>
   
   

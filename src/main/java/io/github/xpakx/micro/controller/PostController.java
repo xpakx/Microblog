@@ -2,8 +2,10 @@ package io.github.xpakx.micro.controller;
 
 import io.github.xpakx.micro.service.PostService;
 import io.github.xpakx.micro.service.UserService;
+import io.github.xpakx.micro.service.CommentService;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.User;
+import io.github.xpakx.micro.entity.Comment;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,8 @@ import io.github.xpakx.micro.error.UserUnauthorized;
 import io.github.xpakx.micro.error.ForbiddenException;
 import java.util.stream.Collectors;
 import org.springframework.validation.BindingResult;
-
+import java.util.List;
+import java.util.Collections;
 
 import java.security.Principal;
 
@@ -23,12 +26,14 @@ public class PostController
 {
   private PostService postService;
   private UserService userService;
+  private CommentService commentService;
   
   @Autowired
-  public void setService(PostService postService, UserService userService)
+  public void setService(PostService postService, UserService userService, CommentService commentService)
   {
     this.postService = postService;
     this.userService = userService;
+    this.commentService = commentService;
   }
 
   
@@ -36,7 +41,15 @@ public class PostController
   public String getAllPosts(Model model)
   {
     Page<Post> posts = postService.findAll(0);
-    model.addAttribute("posts", posts.getContent());
+    List<Post> postList = posts.getContent();
+    
+    for(Post post : postList)
+    {
+      List<Comment> comments = commentService.findTwoByPostId(post.getId()).getContent();
+      post.setComments(comments);
+    }
+    
+    model.addAttribute("posts", postList);
     return "posts";
   }
   
@@ -85,6 +98,20 @@ public class PostController
   public String getPost(@PathVariable Integer id, Model model)
   {
     Post post = postService.findById(id);
+    List<Comment> comments = commentService.findAllByPostId(post.getId(), 0).getContent();
+    post.setComments(comments);
+    
+    model.addAttribute("post", post);
+    return "post";
+  }
+  
+  @GetMapping("/post/{id}/{pageId}")
+  public String getPost(@PathVariable Integer id, @PathVariable Integer pageId, Model model)
+  {
+    Post post = postService.findById(id);
+    List<Comment> comments = commentService.findAllByPostId(post.getId(), pageId).getContent();
+    post.setComments(comments);
+    
     model.addAttribute("post", post);
     return "post";
   }
