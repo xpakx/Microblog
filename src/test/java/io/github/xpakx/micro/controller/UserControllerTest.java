@@ -129,7 +129,7 @@ public class UserControllerTest
   {     
     //given    
     given(userService.findByEmail(anyString()))
-    .willReturn(null);
+    .willReturn(Optional.empty());
     given(userService.findByUsername(anyString()))
     .willReturn(Optional.empty());
     mockMvc
@@ -173,7 +173,7 @@ public class UserControllerTest
     //given    
     User user = new User();
     given(userService.findByEmail(anyString()))
-    .willReturn(null);
+    .willReturn(Optional.empty());
     given(userService.findByUsername(anyString()))
     .willReturn(Optional.of(user));
     mockMvc
@@ -205,7 +205,7 @@ public class UserControllerTest
     //given    
     User user = new User();
     given(userService.findByEmail(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     given(userService.findByUsername(anyString()))
     .willReturn(Optional.empty());
     mockMvc
@@ -236,7 +236,7 @@ public class UserControllerTest
   {     
     //given    
     given(userService.findByEmail(anyString()))
-    .willReturn(null);
+    .willReturn(Optional.empty());
     given(userService.findByUsername(anyString()))
     .willReturn(Optional.empty());
     mockMvc

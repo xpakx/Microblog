@@ -54,7 +54,7 @@ public class UserController
       bindingResult.rejectValue("username", "error.userForm", "User with specified username exists!");
     }
     
-    if(userService.findByEmail(userForm.getEmail()) != null)
+    if(userService.findByEmail(userForm.getEmail()).isPresent())
     {
       bindingResult.rejectValue("email", "error.userForm", "User with specified email exists!");
     }
