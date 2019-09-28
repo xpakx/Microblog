@@ -277,7 +277,8 @@ public class UserControllerTest
     //then
     .andExpect(status().isOk())
     .andExpect(view().name("userPosts"))
-    .andExpect(model().attributeExists("posts"));
+    .andExpect(model().attributeExists("posts"))
+    .andExpect(model().attributeExists("username"));
     
     then(postService)
     .should(times(1))
@@ -300,7 +301,8 @@ public class UserControllerTest
     //then
     .andExpect(status().isOk())
     .andExpect(view().name("userPosts"))
-    .andExpect(model().attributeExists("posts"));
+    .andExpect(model().attributeExists("posts"))
+    .andExpect(model().attributeExists("username"));
     
     then(postService)
     .should(times(1))
@@ -324,7 +326,8 @@ public class UserControllerTest
     //then
     .andExpect(status().isOk())
     .andExpect(view().name("userComments"))
-    .andExpect(model().attributeExists("comments"));
+    .andExpect(model().attributeExists("comments"))
+    .andExpect(model().attributeExists("username"));
     
     then(commentService)
     .should(times(1))
@@ -347,7 +350,8 @@ public class UserControllerTest
     //then
     .andExpect(status().isOk())
     .andExpect(view().name("userComments"))
-    .andExpect(model().attributeExists("comments"));
+    .andExpect(model().attributeExists("comments"))
+    .andExpect(model().attributeExists("username"));
     
     then(commentService)
     .should(times(1))
