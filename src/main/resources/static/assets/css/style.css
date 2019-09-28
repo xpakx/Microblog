@@ -144,6 +144,12 @@ button.register
   height: 168px;
 }
 
+button.login
+{
+  height: 84px;
+  padding: 10px 10px;
+}
+
 button:hover
 {
  	border-color: #ffffff;
@@ -204,13 +210,11 @@ button:active
   height: 40px;
 }
 
-span.help-block 
+.help-block 
 {
   text-transform: none;
  	background: rgba(40,40,40,0.8);
  	display: inline-block;
-  position: absolute;
-  left: 65%;
  	border-radius: 4px;
  	color: white;
   box-shadow: 1px 1px 3px #aaa;
@@ -221,7 +225,13 @@ span.help-block
   z-index: 10;
 }
 
-span.help-block:before 
+.help-block-in-control
+{
+  position: absolute;
+  left: 65%;
+}
+
+.help-block-in-control:before 
 {
 	 content: "";
 	 position: absolute;

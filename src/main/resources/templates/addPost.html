@@ -16,14 +16,14 @@
 						</div>
 
     <div>
-								<div th:if="${msg!=null}">
+								<div th:if="${msg!=null}" class="help-block">
 									<p>
 										<span th:text="${msg}"></span>
 									</p>
 								</div>
         
           
-								<div th:if="${param.error}">
+								<div th:if="${param.error}" class="help-block">
 									<p>
 										<span>Invalid message.</span>
 									</p>
