@@ -2,6 +2,7 @@ package io.github.xpakx.micro.controller;
 
 import org.springframework.stereotype.Controller;
 import io.github.xpakx.micro.service.UserService;
+import io.github.xpakx.micro.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -13,16 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletException;
 import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
+import org.springframework.data.domain.Page;
+import java.util.List;
 
 @Controller
 public class UserController
 {
   private UserService userService;
+  private PostService postService;
   
   @Autowired
-  public UserController(UserService userService)
+  public UserController(UserService userService, PostService postService)
   {
     this.userService = userService;
+    this.postService = postService;
   }
   
   @GetMapping("register")
@@ -71,13 +76,21 @@ public class UserController
   @GetMapping("/user/{userId}/posts")
   public String getUserPosts(@PathVariable Integer userId, Model model)
   {
-    return "";
+    Page<Post> posts = postService.findAllByUserId(userId, 0);
+    List<Post> postList = posts.getContent();
+    
+    model.addAttribute("posts", postList);
+    return "userPosts";
   }
   
   @GetMapping("/user/{userId}/posts/{page}")
   public String getUserPosts(@PathVariable Integer userId, @PathVariable Integer page, Model model)
   {
-    return "";
+    Page<Post> posts = postService.findAllByUserId(userId, page);
+    List<Post> postList = posts.getContent();
+    
+    model.addAttribute("posts", postList);
+    return "userPosts";
   }
   
   @GetMapping("/user/{userId}/comments")
