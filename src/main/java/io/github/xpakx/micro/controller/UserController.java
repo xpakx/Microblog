@@ -80,6 +80,8 @@ public class UserController
   @GetMapping("/user/{userId}/posts")
   public String getUserPosts(@PathVariable Integer userId, Model model)
   {
+    User user = userService.findById(userId);
+    model.addAttribute("username", user);
     Page<Post> posts = postService.findAllByUserId(userId, 0);
     model.addAttribute("posts", posts.getContent());
     return "userPosts";
@@ -88,6 +90,8 @@ public class UserController
   @GetMapping("/user/{userId}/posts/{page}")
   public String getUserPosts(@PathVariable Integer userId, @PathVariable Integer page, Model model)
   {
+    User user = userService.findById(userId);
+    model.addAttribute("username", user);
     Page<Post> posts = postService.findAllByUserId(userId, page);
     model.addAttribute("posts", posts.getContent());
     return "userPosts";
@@ -96,6 +100,8 @@ public class UserController
   @GetMapping("/user/{userId}/comments")
   public String getUserComments(@PathVariable Integer userId, Model model)
   {
+    User user = userService.findById(userId);
+    model.addAttribute("username", user);
     Page<Comment> comments = commentService.findAllByUserId(userId, 0);    
     model.addAttribute("comments", comments.getContent());
     return "userComments";
@@ -104,6 +110,8 @@ public class UserController
   @GetMapping("/user/{userId}/comments/{page}")
   public String getUserComments(@PathVariable Integer userId, @PathVariable Integer page, Model model)
   {
+    User user = userService.findById(userId);
+    model.addAttribute("username", user);
     Page<Comment> comments = commentService.findAllByUserId(userId, page);    
     model.addAttribute("comments", comments.getContent());
     return "userComments";

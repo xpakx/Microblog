@@ -267,6 +267,9 @@ public class UserControllerTest
   {
     //given
     Page<Post> posts = Page.empty();
+    User user = new User();
+    given(userService.findById(anyInt()))
+    .willReturn(user);
     given(postService.findAllByUserId(anyInt(), anyInt()))
     .willReturn(posts);
     mockMvc
@@ -291,6 +294,9 @@ public class UserControllerTest
   {
     //given
     Page<Post> posts = Page.empty();
+    User user = new User();
+    given(userService.findById(anyInt()))
+    .willReturn(user);
     given(postService.findAllByUserId(anyInt(), anyInt()))
     .willReturn(posts);
     mockMvc
@@ -316,6 +322,9 @@ public class UserControllerTest
   {
     //given
     Page<Comment> comments = Page.empty();
+    User user = new User();
+    given(userService.findById(anyInt()))
+    .willReturn(user);
     given(commentService.findAllByUserId(anyInt(), anyInt()))
     .willReturn(comments);
     mockMvc
@@ -340,6 +349,9 @@ public class UserControllerTest
   {
     //given
     Page<Comment> comments = Page.empty();
+    User user = new User();
+    given(userService.findById(anyInt()))
+    .willReturn(user);
     given(commentService.findAllByUserId(anyInt(), anyInt()))
     .willReturn(comments);
     mockMvc
