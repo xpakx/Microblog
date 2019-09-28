@@ -73,49 +73,39 @@ public class UserController
     }
     
     userForm.setId(null);
-    
     userService.save(userForm);
-    
     return "redirect:/login";
   }
   
   @GetMapping("/user/{userId}/posts")
   public String getUserPosts(@PathVariable Integer userId, Model model)
   {
-    User user = userService.findById(userId);
-    model.addAttribute("user", user);
-    Page<Post> posts = postService.findAllByUserId(userId, 0);
-    model.addAttribute("posts", posts.getContent());
+    model.addAttribute("user", userService.findById(userId));
+    model.addAttribute("posts", postService.findAllByUserId(userId, 0).getContent());
     return "userPosts";
   }
   
   @GetMapping("/user/{userId}/posts/{page}")
   public String getUserPosts(@PathVariable Integer userId, @PathVariable Integer page, Model model)
   {
-    User user = userService.findById(userId);
-    model.addAttribute("user", user);
-    Page<Post> posts = postService.findAllByUserId(userId, page);
-    model.addAttribute("posts", posts.getContent());
+    model.addAttribute("user", userService.findById(userId));
+    model.addAttribute("posts", postService.findAllByUserId(userId, page).getContent());
     return "userPosts";
   }
   
   @GetMapping("/user/{userId}/comments")
   public String getUserComments(@PathVariable Integer userId, Model model)
   {
-    User user = userService.findById(userId);
-    model.addAttribute("user", user);
-    Page<Comment> comments = commentService.findAllByUserId(userId, 0);    
-    model.addAttribute("comments", comments.getContent());
+    model.addAttribute("user", userService.findById(userId));
+    model.addAttribute("comments", commentService.findAllByUserId(userId, 0).getContent());
     return "userComments";
   }
   
   @GetMapping("/user/{userId}/comments/{page}")
   public String getUserComments(@PathVariable Integer userId, @PathVariable Integer page, Model model)
   {
-    User user = userService.findById(userId);
-    model.addAttribute("user", user);
-    Page<Comment> comments = commentService.findAllByUserId(userId, page);    
-    model.addAttribute("comments", comments.getContent());
+    model.addAttribute("user", userService.findById(userId));
+    model.addAttribute("comments", commentService.findAllByUserId(userId, page).getContent());
     return "userComments";
   }
 }
