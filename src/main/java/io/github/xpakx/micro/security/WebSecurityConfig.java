@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import javax.annotation.Resource;
 
 @Configuration
 @EnableWebSecurity
@@ -22,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
   private UserDetailsService customUserDetailsService;
   
-  @Autowired
+  @Resource
   public void setUserDetailsService(UserDetailsService customUserDetailsService) 
   {
     this.customUserDetailsService = customUserDetailsService;
