@@ -81,9 +81,7 @@ public class UserController
   public String getUserPosts(@PathVariable Integer userId, Model model)
   {
     Page<Post> posts = postService.findAllByUserId(userId, 0);
-    List<Post> postList = posts.getContent();
-    
-    model.addAttribute("posts", postList);
+    model.addAttribute("posts", posts.getContent());
     return "userPosts";
   }
   
@@ -91,9 +89,7 @@ public class UserController
   public String getUserPosts(@PathVariable Integer userId, @PathVariable Integer page, Model model)
   {
     Page<Post> posts = postService.findAllByUserId(userId, page);
-    List<Post> postList = posts.getContent();
-    
-    model.addAttribute("posts", postList);
+    model.addAttribute("posts", posts.getContent());
     return "userPosts";
   }
   
