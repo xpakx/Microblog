@@ -256,6 +256,53 @@ public class UserControllerTest
     .save(any(User.class));
   }
   
+  
+  @Test
+  public void controllerGetsUserPostsFromService() throws Exception 
+  {
+    //givenfindAllByUserId(Integer userId, Integer page)
+    Page<Post> posts = Page.empty();
+    given(postService.findAllByUserId(anyInt(), anyInt()))
+    .willReturn(posts);
+    mockMvc
+    
+    //when
+    .perform(get("/user/1/posts"))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("userPosts"))
+    .andExpect(model().attributeExists("posts"));
+    
+    then(postService)
+    .should(times(1))
+    .findAllByUserId(1, 0);
+    then(postService).shouldHaveNoMoreInteractions();
+  }
+  
+  @Test
+  public void controllerGetsUserPostsFromServiceByPage() throws Exception 
+  {
+    //givenfindAllByUserId(Integer userId, Integer page)
+    Page<Post> posts = Page.empty();
+    given(postService.findAllByUserId(anyInt(), anyInt()))
+    .willReturn(posts);
+    mockMvc
+    
+    //when
+    .perform(get("/user/1/posts/10"))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("userPosts"))
+    .andExpect(model().attributeExists("posts"));
+    
+    then(postService)
+    .should(times(1))
+    .findAllByUserId(1, 10);
+    then(postService).shouldHaveNoMoreInteractions();
+  }
+  
 }
 
 

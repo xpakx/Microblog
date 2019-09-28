@@ -61,15 +61,34 @@ public class UserController
        return "register";
     }
     
-    
-    
-    
-    
-    
     userForm.setId(null);
     
     userService.save(userForm);
     
     return "redirect:/login";
+  }
+  
+  @GetMapping("/user/{userId}/posts")
+  public String getUserPosts(@PathVariable Integer userId, Model model)
+  {
+    return "";
+  }
+  
+  @GetMapping("/user/{userId}/posts/{page}")
+  public String getUserPosts(@PathVariable Integer userId, @PathVariable Integer page, Model model)
+  {
+    return "";
+  }
+  
+  @GetMapping("/user/{userId}/comments")
+  public String getUserComments(@PathVariable Integer userId, Model model)
+  {
+    return "";
+  }
+  
+  @GetMapping("/user/{userId}/comments/{page}")
+  public String getUserComments(@PathVariable Integer userId, @PathVariable Integer page, Model model)
+  {
+    return "";
   }
 }
