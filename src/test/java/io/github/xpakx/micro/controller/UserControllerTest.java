@@ -30,8 +30,10 @@ import org.mockito.Mock;
 import org.mockito.InjectMocks;
 
 import io.github.xpakx.micro.service.PostService;
+import io.github.xpakx.micro.service.CommentService;
 import io.github.xpakx.micro.service.UserService;
 import io.github.xpakx.micro.entity.Post;
+import io.github.xpakx.micro.entity.Comment;
 import io.github.xpakx.micro.entity.User;
 import io.github.xpakx.micro.entity.UserRole;
 import org.mockito.MockitoAnnotations;
@@ -72,6 +74,9 @@ public class UserControllerTest
   
   @Mock
   private PostService postService;
+  
+  @Mock
+  private CommentService commentService;
   
   @Mock
   private UserService userService;
@@ -260,7 +265,7 @@ public class UserControllerTest
   @Test
   public void controllerGetsUserPostsFromService() throws Exception 
   {
-    //givenfindAllByUserId(Integer userId, Integer page)
+    //given
     Page<Post> posts = Page.empty();
     given(postService.findAllByUserId(anyInt(), anyInt()))
     .willReturn(posts);
@@ -283,7 +288,7 @@ public class UserControllerTest
   @Test
   public void controllerGetsUserPostsFromServiceByPage() throws Exception 
   {
-    //givenfindAllByUserId(Integer userId, Integer page)
+    //given
     Page<Post> posts = Page.empty();
     given(postService.findAllByUserId(anyInt(), anyInt()))
     .willReturn(posts);
@@ -301,6 +306,53 @@ public class UserControllerTest
     .should(times(1))
     .findAllByUserId(1, 10);
     then(postService).shouldHaveNoMoreInteractions();
+  }
+  
+  
+  @Test
+  public void controllerGetsUserCommentsFromService() throws Exception 
+  {
+    //given
+    Page<Comment> comments = Page.empty();
+    given(commentService.findAllByUserId(anyInt(), anyInt()))
+    .willReturn(comments);
+    mockMvc
+    
+    //when
+    .perform(get("/user/1/comments"))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("userComments"))
+    .andExpect(model().attributeExists("comments"));
+    
+    then(commentService)
+    .should(times(1))
+    .findAllByUserId(1, 0);
+    then(commentService).shouldHaveNoMoreInteractions();
+  }
+  
+  @Test
+  public void controllerGetsUserCommentsFromServiceByPage() throws Exception 
+  {
+    //given
+    Page<Comment> comments = Page.empty();
+    given(commentService.findAllByUserId(anyInt(), anyInt()))
+    .willReturn(comments);
+    mockMvc
+    
+    //when
+    .perform(get("/user/1/comments/10"))
+    
+    //then
+    .andExpect(status().isOk())
+    .andExpect(view().name("userComments"))
+    .andExpect(model().attributeExists("comments"));
+    
+    then(commentService)
+    .should(times(1))
+    .findAllByUserId(1, 10);
+    then(commentService).shouldHaveNoMoreInteractions();
   }
   
 }
