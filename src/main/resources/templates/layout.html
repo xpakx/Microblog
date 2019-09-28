@@ -14,6 +14,12 @@
 <body th:fragment="common_body(div)">
 
 <div class="main">	
+  <div class="header">
+    <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a>
+    <a sec:authorize="!isAuthenticated()" th:href="@{/register}">Register</a>
+    <a th:href="@{/posts}">Posts</a>
+  </div>
+  
 	  <div class="container">
 
 		  <div th:replace="${div}">
