@@ -218,7 +218,7 @@ public class CommentControllerTest
     mockMvc
     
     //when
-    .perform(get("/comment/1/delete")
+    .perform(post("/comment/1/delete").with(csrf())
     .principal(principal))
     
     //then
@@ -258,7 +258,7 @@ public class CommentControllerTest
     mockMvc
     
     //when
-    .perform(get("/comment/1/delete")
+    .perform(post("/comment/1/delete").with(csrf())
     .principal(principal))
     
     //then
@@ -301,7 +301,7 @@ public class CommentControllerTest
     mockMvc
     
     //when
-    .perform(get("/comment/1/delete")
+    .perform(post("/comment/1/delete").with(csrf())
     .principal(principal))
     
     //then
@@ -345,7 +345,7 @@ public class CommentControllerTest
     mockMvc
     
     //when
-    .perform(get("/comment/1/delete")
+    .perform(post("/comment/1/delete").with(csrf())
     .principal(principal))
     
     //then
@@ -390,7 +390,7 @@ public class CommentControllerTest
     mockMvc
     
     //when
-    .perform(get("/comment/1/delete")
+    .perform(post("/comment/1/delete").with(csrf())
     .principal(principal))
     
     //then
