@@ -189,7 +189,7 @@ public class PostController
     return "redirect:/posts";
   }
   
-  @GetMapping("/post/{id}/delete")
+  @PostMapping("/post/{id}/delete")
   public String deletePost(@PathVariable Integer id, Model model, Principal principal)
   {
     User user = userService.findByUsername(principal.getName());

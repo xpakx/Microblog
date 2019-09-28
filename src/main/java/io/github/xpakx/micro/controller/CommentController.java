@@ -155,7 +155,7 @@ public class CommentController
     return "redirect:/post/"+ postId;
   }
   
-  @GetMapping("/comment/{id}/delete")
+  @PostMapping("/comment/{id}/delete")
   public String deleteComment(@PathVariable Integer id, Model model, Principal principal)
   {
     User user = userService.findByUsername(principal.getName());
