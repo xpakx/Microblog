@@ -55,6 +55,7 @@ import io.github.xpakx.micro.error.UserUnauthorized;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.mockito.BDDMockito.any;
 
@@ -130,7 +131,7 @@ public class UserControllerTest
     given(userService.findByEmail(anyString()))
     .willReturn(null);
     given(userService.findByUsername(anyString()))
-    .willReturn(null);
+    .willReturn(Optional.empty());
     mockMvc
     
     //when
@@ -174,7 +175,7 @@ public class UserControllerTest
     given(userService.findByEmail(anyString()))
     .willReturn(null);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     mockMvc
     
     //when
@@ -206,7 +207,7 @@ public class UserControllerTest
     given(userService.findByEmail(anyString()))
     .willReturn(user);
     given(userService.findByUsername(anyString()))
-    .willReturn(null);
+    .willReturn(Optional.empty());
     mockMvc
     
     //when
@@ -237,7 +238,7 @@ public class UserControllerTest
     given(userService.findByEmail(anyString()))
     .willReturn(null);
     given(userService.findByUsername(anyString()))
-    .willReturn(null);
+    .willReturn(Optional.empty());
     mockMvc
     
     //when

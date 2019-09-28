@@ -46,7 +46,7 @@ public class CommentController
   @PostMapping("/post/{id}/comment/add")
   public String addComment(@PathVariable Integer id, @ModelAttribute("commentForm") Comment commentForm, BindingResult bindingResult, Principal principal, Model model) throws ForbiddenException
   {    
-    User user = userService.findByUsername(principal.getName());
+    User user = userService.findByUsername(principal.getName()).orElse(null);
     
     boolean flag=false;
     if(user == null) 
@@ -100,7 +100,7 @@ public class CommentController
   public String updateComment(@PathVariable Integer id, @ModelAttribute("commentForm") Comment commentForm, BindingResult bindingResult, Model model, Principal principal)
   {
   
-    User user = userService.findByUsername(principal.getName());
+    User user = userService.findByUsername(principal.getName()).orElse(null);
     
     if(user == null) 
     {
@@ -158,7 +158,7 @@ public class CommentController
   @PostMapping("/comment/{id}/delete")
   public String deleteComment(@PathVariable Integer id, Model model, Principal principal)
   {
-    User user = userService.findByUsername(principal.getName());
+    User user = userService.findByUsername(principal.getName()).orElse(null);
     
     if(user == null) 
     {

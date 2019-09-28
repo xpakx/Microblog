@@ -55,7 +55,7 @@ import io.github.xpakx.micro.error.UserUnauthorized;
 
 import java.util.List;
 import java.util.ArrayList;
-
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 public class CommentControllerTest 
@@ -134,7 +134,7 @@ public class CommentControllerTest
     given(commentService.addComment(any(Comment.class)))
     .willReturn(comment);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     given(postService.findById(anyInt()))
     .willReturn(post);
     mockMvc
@@ -173,7 +173,7 @@ public class CommentControllerTest
     given(commentService.addComment(any(Comment.class)))
     .willReturn(comment);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     mockMvc
     
     //when
@@ -211,7 +211,7 @@ public class CommentControllerTest
     comment.setUser(user);
     comment.setId(1);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     given(commentService.deleteComment(anyInt(), anyInt()))
     .willReturn(1);
     
@@ -252,7 +252,7 @@ public class CommentControllerTest
     comment.setId(1);
     willThrow(new UserNotFound("")).given(commentService).deleteComment(anyInt(), anyInt());
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     
     
     mockMvc
@@ -295,7 +295,7 @@ public class CommentControllerTest
     willThrow(new UserUnauthorized(""))
     .given(commentService).deleteComment(anyInt(), anyInt());
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     
     
     mockMvc
@@ -338,7 +338,7 @@ public class CommentControllerTest
     comment.setUser(user);
     comment.setId(1);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     given(commentService.deleteComment(anyInt()))
     .willReturn(1);
     
@@ -385,7 +385,7 @@ public class CommentControllerTest
     willThrow(new UserNotFound(""))
     .given(commentService).deleteComment(anyInt());
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     
     mockMvc
     
@@ -484,7 +484,7 @@ public class CommentControllerTest
     comment.setUser(user);
     comment.setId(1);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     given(commentService.updateComment(anyInt(), anyInt(), any(Comment.class)))
     .willReturn(1);
     mockMvc
@@ -535,7 +535,7 @@ public class CommentControllerTest
     comment.setUser(user);
     comment.setId(1);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     willThrow(new UserNotFound(""))
     .given(commentService).updateComment(anyInt(), anyInt(), any(Comment.class));
     mockMvc
@@ -584,7 +584,7 @@ public class CommentControllerTest
     comment.setUser(user);
     comment.setId(1);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     willThrow(new UserNotFound(""))
     .given(commentService).updateComment(anyInt(), any(Comment.class));
     mockMvc
@@ -633,7 +633,7 @@ public class CommentControllerTest
     comment.setUser(user);
     comment.setId(1);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     given(commentService.updateComment(anyInt(), any(Comment.class)))
     .willReturn(1);
     mockMvc
@@ -684,7 +684,7 @@ public class CommentControllerTest
     willThrow(new UserUnauthorized(""))
     .given(commentService).updateComment(anyInt(), anyInt(), any(Comment.class));
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     
     
     mockMvc

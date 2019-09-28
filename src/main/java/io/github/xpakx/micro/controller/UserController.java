@@ -49,7 +49,7 @@ public class UserController
       bindingResult.rejectValue("confirmPassword", "error.userForm", "Passwords specified must be identical!");
     }
     
-    if(userService.findByUsername(userForm.getUsername()) != null)
+    if(userService.findByUsername(userForm.getUsername()).isPresent())
     {
       bindingResult.rejectValue("username", "error.userForm", "User with specified username exists!");
     }

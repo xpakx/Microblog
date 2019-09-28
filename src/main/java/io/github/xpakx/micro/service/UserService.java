@@ -33,9 +33,9 @@ public class UserService
     return userRepository.findById(i).orElse(null);
   }
   
-  public User findByUsername(String username)
+  public Optional<User> findByUsername(String username)
   {
-    return userRepository.findByUsername(username).orElse(null);
+    return userRepository.findByUsername(username);
   }
   
   public User findByEmail(String email)

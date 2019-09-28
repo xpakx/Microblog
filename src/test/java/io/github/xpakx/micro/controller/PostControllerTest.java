@@ -55,6 +55,7 @@ import io.github.xpakx.micro.error.UserUnauthorized;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 @RunWith(SpringRunner.class)
@@ -198,7 +199,7 @@ public class PostControllerTest
     given(postService.addPost(any(Post.class)))
     .willReturn(post);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     mockMvc
     
     //when
@@ -232,7 +233,7 @@ public class PostControllerTest
     given(postService.addPost(any(Post.class)))
     .willReturn(post);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     mockMvc
     
     //when
@@ -292,7 +293,7 @@ public class PostControllerTest
     post.setUser(user);
     post.setId(1);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     
     
     mockMvc
@@ -328,7 +329,7 @@ public class PostControllerTest
     post.setId(1);
     willThrow(new UserNotFound("")).given(postService).deletePost(anyInt(), anyInt());
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     
     
     mockMvc
@@ -367,7 +368,7 @@ public class PostControllerTest
     willThrow(new UserUnauthorized(""))
     .given(postService).deletePost(anyInt(), anyInt());
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     
     
     mockMvc
@@ -406,7 +407,7 @@ public class PostControllerTest
     post.setUser(user);
     post.setId(1);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     
     mockMvc
     
@@ -447,7 +448,7 @@ public class PostControllerTest
     willThrow(new UserNotFound(""))
     .given(postService).deletePost(anyInt());
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     
     mockMvc
     
@@ -538,7 +539,7 @@ public class PostControllerTest
     post.setUser(user);
     post.setId(1);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     mockMvc
     
     //when
@@ -583,7 +584,7 @@ public class PostControllerTest
     post.setUser(user);
     post.setId(1);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     willThrow(new UserNotFound(""))
     .given(postService).updatePost(anyInt(), anyInt(), any(Post.class));
     mockMvc
@@ -628,7 +629,7 @@ public class PostControllerTest
     post.setUser(user);
     post.setId(1);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     willThrow(new UserNotFound(""))
     .given(postService).updatePost(anyInt(), any(Post.class));
     mockMvc
@@ -673,7 +674,7 @@ public class PostControllerTest
     post.setUser(user);
     post.setId(1);
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     mockMvc
     
     //when
@@ -719,7 +720,7 @@ public class PostControllerTest
     willThrow(new UserUnauthorized(""))
     .given(postService).updatePost(anyInt(), anyInt(), any(Post.class));
     given(userService.findByUsername(anyString()))
-    .willReturn(user);
+    .willReturn(Optional.of(user));
     
     
     mockMvc

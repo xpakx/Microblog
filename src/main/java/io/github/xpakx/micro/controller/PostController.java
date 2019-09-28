@@ -72,7 +72,7 @@ public class PostController
   @PostMapping("/post/add")
   public String addPost(@ModelAttribute("postForm") Post postForm, BindingResult bindingResult, Principal principal, Model model) throws ForbiddenException
   {    
-    User user = userService.findByUsername(principal.getName());
+    User user = userService.findByUsername(principal.getName()).orElse(null);
     
     if(user == null) 
     {
@@ -133,7 +133,7 @@ public class PostController
   public String updatePost(@PathVariable Integer id, @ModelAttribute("postForm") Post postForm, BindingResult bindingResult, Model model, Principal principal)
   {
   
-    User user = userService.findByUsername(principal.getName());
+    User user = userService.findByUsername(principal.getName()).orElse(null);
     
     if(user == null) 
     {
@@ -192,7 +192,7 @@ public class PostController
   @PostMapping("/post/{id}/delete")
   public String deletePost(@PathVariable Integer id, Model model, Principal principal)
   {
-    User user = userService.findByUsername(principal.getName());
+    User user = userService.findByUsername(principal.getName()).orElse(null);
     
     if(user == null) 
     {
