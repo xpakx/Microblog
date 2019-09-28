@@ -12,12 +12,12 @@
     <p class="postBody" th:text="${post.message}">Text ...</p>
     
     <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
-      <a th:href="@{/post/{id}/edit(id=${post.id})}">e</a>
-      <a th:href="@{/post/{id}/delete(id=${post.id})}">x</a> 
+      <a th:href="@{/post/{id}/edit(id=${post.id})}">edit</a>
+      <form class="button-link-wrapper" th:action="@{/post/{id}/delete(id=${post.id})}" method="post"><button type="submit" class="button-link">delete</button></form> 
     </div>
     <div class="actions" th:if='${#authentication.getPrincipal().getUsername() == post.user.username}' sec:authorize="isAuthenticated() && !hasRole('ROLE_ADMIN')">
-      <a th:href="@{/post/{id}/edit(id=${post.id})}">e</a>
-      <a th:href="@{/post/{id}/delete(id=${post.id})}">x</a>      
+      <a th:href="@{/post/{id}/edit(id=${post.id})}">edit</a>
+      <form class="button-link-wrapper" th:action="@{/post/{id}/delete(id=${post.id})}" method="post"><button type="submit" class="button-link">delete</button></form>     
     </div>
     
     <a class="action" th:href="@{'/post/' + ${post.id}}">→</a> 
@@ -30,12 +30,12 @@
           <h2 th:text="${comment.user.username}">Text ...</h2>
           <p class="postBody" th:text="${comment.message}">Text ...</p>
           <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
-            <a th:href="@{/comment/{id}/edit(id=${comment.id})}">e</a>
-            <a th:href="@{/comment/{id}/delete(id=${comment.id})}">x</a> 
+            <a th:href="@{/comment/{id}/edit(id=${comment.id})}">edit</a>
+            <form class="button-link-wrapper" th:action="@{/comment/{id}/delete(id=${comment.id})}" method="post"><button type="submit" class="button-link">delete</button></form>  
           </div>
           <div class="actions" th:if='${#authentication.getPrincipal().getUsername() == comment.user.username}' sec:authorize="isAuthenticated() && !hasRole('ROLE_ADMIN')">
-            <a th:href="@{/comment/{id}/edit(id=${comment.id})}">e</a>
-            <a th:href="@{/comment/{id}/delete(id=${comment.id})}">x</a>      
+            <a th:href="@{/comment/{id}/edit(id=${comment.id})}">edit</a>
+            <form class="button-link-wrapper" th:action="@{/comment/{id}/delete(id=${comment.id})}" method="post"><button type="submit" class="button-link">delete</button></form>       
           </div>
         </div>
   </div>
@@ -48,7 +48,7 @@
 								placeholder="Message"></textarea>
 						</div>
 						
-								<button type="submit">Send</button>
+								<button class="button" type="submit">Send</button>
 						</div>
 
    </div>					

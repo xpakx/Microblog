@@ -122,7 +122,7 @@ textarea.form-control
 	 float: left;
 }
 
-button 
+button.button
 {
 	 padding: 50px 10px;
   margin: 0;
@@ -151,14 +151,14 @@ button.login
   padding: 10px 10px;
 }
 
-button:hover
+button.button:hover
 {
  	border-color: #ffffff;
  	background: #ffffff;
  	color: #BA7D7D;
 }
 
-button:active
+button.button:active
 {
 	 border-color: rgba(255,255,255,0.9);
 	 background: rgba(255,255,255,0.9);
@@ -272,4 +272,26 @@ button:active
 {
   color: #E0C9CB;
   text-decoration: none;
+}
+
+
+.button-link 
+{
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  color: #0000EE;
+  padding: 0;
+  text-decoration: underline;
+  font-family: inherit;
+  font-size: inherit;
+  font-size: 0.6em;
+  color: #BA7E7E;
+  letter-spacing: 1px;
+}
+
+.button-link-wrapper
+{
+  display: inline;
 }
