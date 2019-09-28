@@ -4,12 +4,11 @@
  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
  
 <head th:replace="layout :: common_header(~{::title})">
-  <title>Microblog – User's Posts'</title>
+  <title th:text="@{${user} ? 'Microblog — ' + ${user.username} + '\'s comments' : 'Microblog'}">Microblog – User's Posts'</title>
 </head>
-
 <body th:replace="layout :: common_body(~{::div})">
 <div> 
-  <div></div>
+  <div class="user-list-header" th:if="${user}" th:text="@{${user.username} + '\'s comments'}"></div>
   
   <div class="post" th:each="post : ${comments}">
     <h2 th:text="${post.user.username}">Text ...</h2>
