@@ -81,7 +81,7 @@ public class UserController
   public String getUserPosts(@PathVariable Integer userId, Model model)
   {
     User user = userService.findById(userId);
-    model.addAttribute("username", user);
+    model.addAttribute("user", user);
     Page<Post> posts = postService.findAllByUserId(userId, 0);
     model.addAttribute("posts", posts.getContent());
     return "userPosts";
@@ -91,7 +91,7 @@ public class UserController
   public String getUserPosts(@PathVariable Integer userId, @PathVariable Integer page, Model model)
   {
     User user = userService.findById(userId);
-    model.addAttribute("username", user);
+    model.addAttribute("user", user);
     Page<Post> posts = postService.findAllByUserId(userId, page);
     model.addAttribute("posts", posts.getContent());
     return "userPosts";
@@ -101,7 +101,7 @@ public class UserController
   public String getUserComments(@PathVariable Integer userId, Model model)
   {
     User user = userService.findById(userId);
-    model.addAttribute("username", user);
+    model.addAttribute("user", user);
     Page<Comment> comments = commentService.findAllByUserId(userId, 0);    
     model.addAttribute("comments", comments.getContent());
     return "userComments";
@@ -111,7 +111,7 @@ public class UserController
   public String getUserComments(@PathVariable Integer userId, @PathVariable Integer page, Model model)
   {
     User user = userService.findById(userId);
-    model.addAttribute("username", user);
+    model.addAttribute("user", user);
     Page<Comment> comments = commentService.findAllByUserId(userId, page);    
     model.addAttribute("comments", comments.getContent());
     return "userComments";
