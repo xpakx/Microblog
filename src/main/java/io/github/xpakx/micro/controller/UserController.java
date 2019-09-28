@@ -3,11 +3,13 @@ package io.github.xpakx.micro.controller;
 import org.springframework.stereotype.Controller;
 import io.github.xpakx.micro.service.UserService;
 import io.github.xpakx.micro.service.PostService;
+import io.github.xpakx.micro.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import io.github.xpakx.micro.entity.Post;
+import io.github.xpakx.micro.entity.Comment;
 import io.github.xpakx.micro.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,12 +24,14 @@ public class UserController
 {
   private UserService userService;
   private PostService postService;
+  private CommentService commentService;
   
   @Autowired
-  public UserController(UserService userService, PostService postService)
+  public UserController(UserService userService, PostService postService, CommentService commentService)
   {
     this.userService = userService;
     this.postService = postService;
+    this.commentService = commentService;
   }
   
   @GetMapping("register")
@@ -96,12 +100,16 @@ public class UserController
   @GetMapping("/user/{userId}/comments")
   public String getUserComments(@PathVariable Integer userId, Model model)
   {
-    return "";
+    Page<Comment> comments = commentService.findAllByUserId(userId, 0);    
+    model.addAttribute("comments", comments.getContent());
+    return "userComments";
   }
   
   @GetMapping("/user/{userId}/comments/{page}")
   public String getUserComments(@PathVariable Integer userId, @PathVariable Integer page, Model model)
   {
-    return "";
+    Page<Comment> comments = commentService.findAllByUserId(userId, page);    
+    model.addAttribute("comments", comments.getContent());
+    return "userComments";
   }
 }
