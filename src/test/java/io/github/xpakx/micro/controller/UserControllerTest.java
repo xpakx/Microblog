@@ -50,7 +50,7 @@ import static org.hamcrest.Matchers.*;
 import java.security.Principal;
 import org.springframework.ui.Model;
 import org.springframework.security.test.context.support.WithUserDetails;
-import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.NotFoundException;
 import io.github.xpakx.micro.error.UserUnauthorized;
 
 import java.util.List;

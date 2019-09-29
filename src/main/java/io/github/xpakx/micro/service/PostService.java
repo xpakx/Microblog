@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.repository.PostRepository;
-import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.NotFoundException;
 import io.github.xpakx.micro.error.UserUnauthorized;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -31,33 +31,33 @@ public class PostService
     return postRepository.findById(i).orElse(null);
   }
   
-  public void deletePost(Integer i) throws UserNotFound
+  public void deletePost(Integer i) throws NotFoundException
   {
     Optional<Post> post =  postRepository.findById(i);
-    postRepository.delete(post.orElseThrow(() -> new UserNotFound("User not found!")));
+    postRepository.delete(post.orElseThrow(() -> new NotFoundException("User not found!")));
   }
   
-  public void deletePost(Integer i, Integer userId) throws UserNotFound, UserUnauthorized
+  public void deletePost(Integer i, Integer userId) throws NotFoundException, UserUnauthorized
   {
     Optional<Post> post =  postRepository.findById(i);
-    Post postToDelete = post.orElseThrow(() -> new UserNotFound("User not found!"));
+    Post postToDelete = post.orElseThrow(() -> new NotFoundException("User not found!"));
     if(postToDelete.getUser().getId() != userId) 
     {throw new UserUnauthorized("User unauthorized!");}
     postRepository.delete(postToDelete);
   }
   
-  public void updatePost(Integer i, Post post) throws UserNotFound
+  public void updatePost(Integer i, Post post) throws NotFoundException
   {
     Optional<Post> foundPost = postRepository.findById(i);
-    Post fPost = foundPost.orElseThrow(() -> new UserNotFound("User not found!"));
+    Post fPost = foundPost.orElseThrow(() -> new NotFoundException("User not found!"));
     fPost.setMessage(post.getMessage());
     postRepository.save(fPost);
   }
   
-  public void updatePost(Integer i, Integer userId, Post post) throws UserNotFound, UserUnauthorized
+  public void updatePost(Integer i, Integer userId, Post post) throws NotFoundException, UserUnauthorized
   {
     Optional<Post> foundPost = postRepository.findById(i);
-    Post fPost = foundPost.orElseThrow(() -> new UserNotFound("User not found!"));
+    Post fPost = foundPost.orElseThrow(() -> new NotFoundException("User not found!"));
     if(fPost.getUser().getId() != userId) 
     {throw new UserUnauthorized("User unauthorized!");}
     fPost.setMessage(post.getMessage());

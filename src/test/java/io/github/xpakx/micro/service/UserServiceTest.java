@@ -13,7 +13,7 @@ import io.github.xpakx.micro.repository.UserRoleRepository;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.User;
 import io.github.xpakx.micro.entity.UserRole;
-import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.NotFoundException;
 import io.github.xpakx.micro.error.UserUnauthorized;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;

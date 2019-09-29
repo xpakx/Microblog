@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import io.github.xpakx.micro.repository.PostRepository;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.User;
-import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.NotFoundException;
 import io.github.xpakx.micro.error.UserUnauthorized;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -137,7 +137,7 @@ public class PostServiceTest
     .willReturn(Optional.empty());
     
     //???
-    assertThrows(UserNotFound.class, () ->
+    assertThrows(NotFoundException.class, () ->
       postService.deletePost(1));
     
     //then
@@ -175,7 +175,7 @@ public class PostServiceTest
     .willReturn(Optional.empty());
     
     //???
-    assertThrows(UserNotFound.class, () ->
+    assertThrows(NotFoundException.class, () ->
       postService.updatePost(1, first));
     
     //then
@@ -321,7 +321,7 @@ public class PostServiceTest
     .willReturn(Optional.empty());
     
     //???
-    assertThrows(UserNotFound.class, () ->
+    assertThrows(NotFoundException.class, () ->
       postService.updatePost(1, 1, first));
     
     //then

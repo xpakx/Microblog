@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import io.github.xpakx.micro.entity.Comment;
 import io.github.xpakx.micro.repository.CommentRepository;
-import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.NotFoundException;
 import io.github.xpakx.micro.error.UserUnauthorized;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -34,7 +34,7 @@ public class CommentService
   public Integer deleteComment(Integer i) 
   {
     Optional<Comment> comment =  commentRepository.findById(i);
-    Comment commentToDelete = comment.orElseThrow(() -> new UserNotFound("Comment not found!"));
+    Comment commentToDelete = comment.orElseThrow(() -> new NotFoundException("Comment not found!"));
     Integer id = commentToDelete.getPost().getId();
     commentRepository.delete(commentToDelete);
     return id;
@@ -43,7 +43,7 @@ public class CommentService
   public Integer deleteComment(Integer i, Integer userId) 
   {
     Optional<Comment> comment =  commentRepository.findById(i);
-    Comment commentToDelete = comment.orElseThrow(() -> new UserNotFound("Comment not found!"));
+    Comment commentToDelete = comment.orElseThrow(() -> new NotFoundException("Comment not found!"));
     Integer id = commentToDelete.getPost().getId();
     if(commentToDelete.getUser().getId() != userId) 
     {throw new UserUnauthorized("User unauthorized!");}
@@ -54,7 +54,7 @@ public class CommentService
   public Integer updateComment(Integer i, Comment comment)
   {
     Optional<Comment> foundComment = commentRepository.findById(i);
-    Comment fComment = foundComment.orElseThrow(() -> new UserNotFound("Comment not found!"));
+    Comment fComment = foundComment.orElseThrow(() -> new NotFoundException("Comment not found!"));
     fComment.setMessage(comment.getMessage());
     commentRepository.save(fComment);
     return fComment.getPost().getId();
@@ -63,7 +63,7 @@ public class CommentService
   public Integer updateComment(Integer i, Integer userId, Comment comment)
   {
     Optional<Comment> foundComment = commentRepository.findById(i);
-    Comment fComment = foundComment.orElseThrow(() -> new UserNotFound("Comment not found!"));
+    Comment fComment = foundComment.orElseThrow(() -> new NotFoundException("Comment not found!"));
     if(fComment.getUser().getId() != userId) 
     {throw new UserUnauthorized("User unauthorized!");}
     fComment.setMessage(comment.getMessage());

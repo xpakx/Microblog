@@ -50,7 +50,7 @@ import org.hamcrest.Matchers;
 import java.security.Principal;
 import org.springframework.ui.Model;
 import org.springframework.security.test.context.support.WithUserDetails;
-import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.NotFoundException;
 import io.github.xpakx.micro.error.UserUnauthorized;
 
 import java.util.List;
@@ -250,7 +250,7 @@ public class CommentControllerTest
     comment.setPost(post);
     comment.setUser(user);
     comment.setId(1);
-    willThrow(new UserNotFound("")).given(commentService).deleteComment(anyInt(), anyInt());
+    willThrow(new NotFoundException("")).given(commentService).deleteComment(anyInt(), anyInt());
     given(userService.findByUsername(anyString()))
     .willReturn(Optional.of(user));
     
@@ -382,7 +382,7 @@ public class CommentControllerTest
     comment.setPost(post);
     comment.setUser(user);
     comment.setId(1);
-    willThrow(new UserNotFound(""))
+    willThrow(new NotFoundException(""))
     .given(commentService).deleteComment(anyInt());
     given(userService.findByUsername(anyString()))
     .willReturn(Optional.of(user));
@@ -536,7 +536,7 @@ public class CommentControllerTest
     comment.setId(1);
     given(userService.findByUsername(anyString()))
     .willReturn(Optional.of(user));
-    willThrow(new UserNotFound(""))
+    willThrow(new NotFoundException(""))
     .given(commentService).updateComment(anyInt(), anyInt(), any(Comment.class));
     mockMvc
     
@@ -585,7 +585,7 @@ public class CommentControllerTest
     comment.setId(1);
     given(userService.findByUsername(anyString()))
     .willReturn(Optional.of(user));
-    willThrow(new UserNotFound(""))
+    willThrow(new NotFoundException(""))
     .given(commentService).updateComment(anyInt(), any(Comment.class));
     mockMvc
     

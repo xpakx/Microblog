@@ -50,7 +50,7 @@ import org.hamcrest.Matchers;
 import java.security.Principal;
 import org.springframework.ui.Model;
 import org.springframework.security.test.context.support.WithUserDetails;
-import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.NotFoundException;
 import io.github.xpakx.micro.error.UserUnauthorized;
 
 import java.util.List;
@@ -327,7 +327,7 @@ public class PostControllerTest
     Post post = new Post();
     post.setUser(user);
     post.setId(1);
-    willThrow(new UserNotFound("")).given(postService).deletePost(anyInt(), anyInt());
+    willThrow(new NotFoundException("")).given(postService).deletePost(anyInt(), anyInt());
     given(userService.findByUsername(anyString()))
     .willReturn(Optional.of(user));
     
@@ -445,7 +445,7 @@ public class PostControllerTest
     Post post = new Post();
     post.setUser(user);
     post.setId(1);
-    willThrow(new UserNotFound(""))
+    willThrow(new NotFoundException(""))
     .given(postService).deletePost(anyInt());
     given(userService.findByUsername(anyString()))
     .willReturn(Optional.of(user));
@@ -585,7 +585,7 @@ public class PostControllerTest
     post.setId(1);
     given(userService.findByUsername(anyString()))
     .willReturn(Optional.of(user));
-    willThrow(new UserNotFound(""))
+    willThrow(new NotFoundException(""))
     .given(postService).updatePost(anyInt(), anyInt(), any(Post.class));
     mockMvc
     
@@ -630,7 +630,7 @@ public class PostControllerTest
     post.setId(1);
     given(userService.findByUsername(anyString()))
     .willReturn(Optional.of(user));
-    willThrow(new UserNotFound(""))
+    willThrow(new NotFoundException(""))
     .given(postService).updatePost(anyInt(), any(Post.class));
     mockMvc
     

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.data.domain.Page;
-import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.NotFoundException;
 import io.github.xpakx.micro.error.UserUnauthorized;
 import io.github.xpakx.micro.error.ForbiddenException;
 import java.util.stream.Collectors;
@@ -157,7 +157,7 @@ public class PostController
       {
         postService.updatePost(id, postForm);
       }
-      catch(UserNotFound e)
+      catch(NotFoundException e)
       {
         bindingResult.rejectValue("message", "error.postForm", "Post not found!"); 
         flag = true;
@@ -169,7 +169,7 @@ public class PostController
       {
         postService.updatePost(id, user.getId(), postForm);
       }
-      catch(UserNotFound e)
+      catch(NotFoundException e)
       {
         bindingResult.rejectValue("message", "error.postForm", "Post not found!"); 
         flag = true;
@@ -208,7 +208,7 @@ public class PostController
       {
         postService.deletePost(id);
       }
-      catch(UserNotFound e)
+      catch(NotFoundException e)
       {
         model.addAttribute("msg", "Post not found!");
         return "delete";
@@ -220,7 +220,7 @@ public class PostController
       {
         postService.deletePost(id, user.getId());
       }
-      catch(UserNotFound e)
+      catch(NotFoundException e)
       {
         model.addAttribute("msg", "Post not found!");
         return "delete";

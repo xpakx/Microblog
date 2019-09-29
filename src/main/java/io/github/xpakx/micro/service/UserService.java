@@ -10,7 +10,7 @@ import io.github.xpakx.micro.entity.User;
 import io.github.xpakx.micro.entity.UserRole;
 import io.github.xpakx.micro.repository.UserRepository;
 import io.github.xpakx.micro.repository.UserRoleRepository;
-import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service

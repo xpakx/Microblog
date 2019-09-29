@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.data.domain.Page;
-import io.github.xpakx.micro.error.UserNotFound;
+import io.github.xpakx.micro.error.NotFoundException;
 import io.github.xpakx.micro.error.UserUnauthorized;
 import io.github.xpakx.micro.error.ForbiddenException;
 import java.util.stream.Collectors;
@@ -124,7 +124,7 @@ public class CommentController
       {
         postId = commentService.updateComment(id, commentForm);
       }
-      catch(UserNotFound e)
+      catch(NotFoundException e)
       {
         bindingResult.rejectValue("message", "error.commentForm", "Comment not found!"); 
         flag = true;
@@ -136,7 +136,7 @@ public class CommentController
       {
         postId = commentService.updateComment(id, user.getId(), commentForm);
       }
-      catch(UserNotFound e)
+      catch(NotFoundException e)
       {
         bindingResult.rejectValue("message", "error.commentForm", "Comment not found!"); 
         flag = true;
@@ -174,7 +174,7 @@ public class CommentController
       {
         postId = commentService.deleteComment(id);
       }
-      catch(UserNotFound e)
+      catch(NotFoundException e)
       {
         model.addAttribute("msg", "Comment not found!");
         return "delete";
@@ -186,7 +186,7 @@ public class CommentController
       {
         postId = commentService.deleteComment(id, user.getId());
       }
-      catch(UserNotFound e)
+      catch(NotFoundException e)
       {
         model.addAttribute("msg", "Comment not found!");
         return "delete";
