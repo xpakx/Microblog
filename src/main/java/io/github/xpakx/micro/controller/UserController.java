@@ -18,6 +18,8 @@ import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.data.domain.Page;
 import java.util.List;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 
 @Controller
 public class UserController
@@ -45,7 +47,7 @@ public class UserController
   @PostMapping("register")
   public String registration(@Valid @ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model)
   {
-    testUserFormForErrors(userForm, bindingResult);
+    bindingResult.addAllErrors(testUserFormForErrors(userForm));
     
     if (bindingResult.hasErrors()) 
     {
@@ -56,22 +58,26 @@ public class UserController
     return "redirect:/login";
   }
   
-  private void testUserFormForErrors(User userForm, BindingResult bindingResult)
+  private Errors testUserFormForErrors(User userForm)
   {
+    BindException errors = new BindException(userForm, "userForm");
+    
     if(!userForm.getPassword().equals(userForm.getConfirmPassword()))
     {
-      bindingResult.rejectValue("confirmPassword", "error.userForm", "Passwords specified must be identical!");
+      errors.rejectValue("confirmPassword", "error.userForm", "Passwords specified must be identical!");
     }
     
     if(userService.findByUsername(userForm.getUsername()).isPresent())
     {
-      bindingResult.rejectValue("username", "error.userForm", "User with specified username exists!");
+      errors.rejectValue("username", "error.userForm", "User with specified username exists!");
     }
     
     if(userService.findByEmail(userForm.getEmail()).isPresent())
     {
-      bindingResult.rejectValue("email", "error.userForm", "User with specified email exists!");
+      errors.rejectValue("email", "error.userForm", "User with specified email exists!");
     }
+    
+    return errors;
   }
   
   @GetMapping("/user/{userId}/posts")
