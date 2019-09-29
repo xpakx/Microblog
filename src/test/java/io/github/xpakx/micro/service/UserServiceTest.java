@@ -141,6 +141,7 @@ public class UserServiceTest
     User user = new User();
     user.setPassword("abc");
     user.setUsername("User");
+    user.setId(1);
     UserRole role = new UserRole();
     role.setName("ROLE_USER");
     given(roleRepository.findByName("ROLE_USER"))
@@ -162,7 +163,7 @@ public class UserServiceTest
     assertThat(userArgument.getRoles().get(0).getName(), is("ROLE_USER"));
     assertThat(userArgument.getPassword(), not(is("abc")));
     assertThat(userArgument.getPassword(), is("hash"));
-    
+    assertNull(userArgument.getId());
   }
   
 }

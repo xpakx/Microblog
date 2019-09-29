@@ -164,7 +164,6 @@ public class UserControllerTest
     assertThat(userArgument.getUsername(), is("Test"));
     assertThat(userArgument.getEmail(), is("test@example.com"));
     assertThat(userArgument.getPassword(), is("testtest"));
-    assertNull(userArgument.getId());
   }
   
   @Test
