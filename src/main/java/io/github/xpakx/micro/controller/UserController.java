@@ -78,7 +78,7 @@ public class UserController
   @GetMapping("/user/{userId}/posts")
   public String getUserPosts(@PathVariable Integer userId, Model model)
   {
-    model.addAttribute("user", userService.findById(userId));
+    model.addAttribute("user", userService.findById(userId).orElse(null));
     model.addAttribute("posts", postService.findAllByUserId(userId, 0).getContent());
     return "userPosts";
   }
@@ -86,7 +86,7 @@ public class UserController
   @GetMapping("/user/{userId}/posts/{page}")
   public String getUserPosts(@PathVariable Integer userId, @PathVariable Integer page, Model model)
   {
-    model.addAttribute("user", userService.findById(userId));
+    model.addAttribute("user", userService.findById(userId).orElse(null));
     model.addAttribute("posts", postService.findAllByUserId(userId, page).getContent());
     return "userPosts";
   }
@@ -94,7 +94,7 @@ public class UserController
   @GetMapping("/user/{userId}/comments")
   public String getUserComments(@PathVariable Integer userId, Model model)
   {
-    model.addAttribute("user", userService.findById(userId));
+    model.addAttribute("user", userService.findById(userId).orElse(null));
     model.addAttribute("comments", commentService.findAllByUserId(userId, 0).getContent());
     return "userComments";
   }
@@ -102,7 +102,7 @@ public class UserController
   @GetMapping("/user/{userId}/comments/{page}")
   public String getUserComments(@PathVariable Integer userId, @PathVariable Integer page, Model model)
   {
-    model.addAttribute("user", userService.findById(userId));
+    model.addAttribute("user", userService.findById(userId).orElse(null));
     model.addAttribute("comments", commentService.findAllByUserId(userId, page).getContent());
     return "userComments";
   }

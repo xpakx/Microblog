@@ -65,15 +65,15 @@ public class UserServiceTest
     .willReturn(Optional.of(user));
     
     //when
-    User result = userService.findById(1);
+    Optional<User> result = userService.findById(1);
     
     //then
     then(userRepository)
     .should(times(1))
     .findById(1);
     then(userRepository).shouldHaveNoMoreInteractions();
-    assertNotNull(result);
-    assertThat(result, is(user));
+    assertTrue(result.isPresent());
+    assertThat(result.get(), is(user));
   }
   
   @Test
@@ -105,14 +105,14 @@ public class UserServiceTest
     .willReturn(Optional.empty());
     
     //when
-    User result = userService.findById(1);
+    Optional<User> result = userService.findById(1);
     
     //then
     then(userRepository)
     .should(times(1))
     .findById(1);
     then(userRepository).shouldHaveNoMoreInteractions();
-    assertNull(result);
+    assertFalse(result.isPresent());
   }
   
   @Test
