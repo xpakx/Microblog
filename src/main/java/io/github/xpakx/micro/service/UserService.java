@@ -46,6 +46,7 @@ public class UserService
   public void save(User user) 
   {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
+    user.setId(null);
     UserRole role = roleRepository.findByName("ROLE_USER").orElse(null);
     List<UserRole> roles = new ArrayList<>();
     roles.add(role);

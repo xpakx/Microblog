@@ -70,7 +70,6 @@ public class UserController
        return "register";
     }
     
-    userForm.setId(null);
     userService.save(userForm);
     return "redirect:/login";
   }
