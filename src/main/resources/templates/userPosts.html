@@ -9,7 +9,10 @@
 
 <body th:replace="layout :: common_body(~{::div})">
 <div> 
-  <div class="user-list-header" th:if="${user}" th:text="@{${user.username} + '\'s posts'}"></div>
+  <div class="user-list-header" th:if="${user}" >
+    <div th:text="@{${user.username} + '\'s posts'}"></div>
+    <a class="button" th:href="@{/user/{id}/comments(id=${user.id})}">show comments</a>
+  </div>
   
   <div class="post" th:each="post : ${posts}">
     <h2 th:text="${post.user.username}">Text ...</h2>

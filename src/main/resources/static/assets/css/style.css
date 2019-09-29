@@ -5,7 +5,7 @@ body, html
   padding:0;
 }
 
-.post
+.post, .user-list-header
 {
   position: relative;
   margin: auto;

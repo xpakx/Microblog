@@ -7,8 +7,11 @@
   <title th:text="@{${user} ? 'Microblog — ' + ${user.username} + '\'s comments' : 'Microblog'}">Microblog – User's Posts'</title>
 </head>
 <body th:replace="layout :: common_body(~{::div})">
-<div> 
-  <div class="user-list-header" th:if="${user}" th:text="@{${user.username} + '\'s comments'}"></div>
+<div>   
+  <div class="user-list-header" th:if="${user}" >
+    <div th:text="@{${user.username} + '\'s comments'}"></div>
+    <a class="button" th:href="@{/user/{id}/posts(id=${user.id})}">show posts</a>
+  </div>
   
   <div class="post" th:each="post : ${comments}">
     <h2 th:text="${post.user.username}">Text ...</h2>
