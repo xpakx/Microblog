@@ -42,6 +42,20 @@ public class UserController
     return "register";
   }
   
+  @PostMapping("register")
+  public String registration(@Valid @ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model)
+  {
+    testUserFormForErrors(userForm, bindingResult);
+    
+    if (bindingResult.hasErrors()) 
+    {
+       return "register";
+    }
+    
+    userService.save(userForm);
+    return "redirect:/login";
+  }
+  
   private void testUserFormForErrors(User userForm, BindingResult bindingResult)
   {
     if(!userForm.getPassword().equals(userForm.getConfirmPassword()))
@@ -58,20 +72,6 @@ public class UserController
     {
       bindingResult.rejectValue("email", "error.userForm", "User with specified email exists!");
     }
-  }
-  
-  @PostMapping("register")
-  public String registration(@Valid @ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model)
-  {
-    testUserFormForErrors(userForm, bindingResult);
-    
-    if (bindingResult.hasErrors()) 
-    {
-       return "register";
-    }
-    
-    userService.save(userForm);
-    return "redirect:/login";
   }
   
   @GetMapping("/user/{userId}/posts")
