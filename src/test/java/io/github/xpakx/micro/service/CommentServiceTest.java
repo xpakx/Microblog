@@ -350,7 +350,7 @@ public class CommentServiceTest
     .willReturn(comments);
     
     //when
-    Page<Comment> result =  commentService.findAllByPostId(1, 0);
+    Page<Comment> result =  commentService.findAllByPostId(1, 1);
     
     //then
     ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
@@ -363,7 +363,7 @@ public class CommentServiceTest
     assertThat(result, Matchers.is(comments));
     
     Pageable pageableArgument = pageableCaptor.getValue();
-    assertEquals(pageableArgument.getPageNumber(), 0);
+    assertEquals(pageableArgument.getPageNumber(), 1);
   }
   
   

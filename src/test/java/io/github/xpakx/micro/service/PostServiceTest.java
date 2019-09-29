@@ -235,7 +235,7 @@ public class PostServiceTest
     .willReturn(posts);
     
     //when
-    Page<Post> result =  postService.findAllByUserId(1, 0);
+    Page<Post> result =  postService.findAllByUserId(1, 1);
     
     //then
     ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
@@ -248,7 +248,7 @@ public class PostServiceTest
     assertThat(result, Matchers.is(posts));
     
     Pageable pageableArgument = pageableCaptor.getValue();
-    assertEquals(pageableArgument.getPageNumber(), 0);
+    assertEquals(pageableArgument.getPageNumber(), 1);
   }
   
   @Test
