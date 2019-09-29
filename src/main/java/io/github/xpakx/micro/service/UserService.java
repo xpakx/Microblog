@@ -47,11 +47,16 @@ public class UserService
   {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setId(null);
+    user.setRoles(getDefaultRoles());
+    userRepository.save(user);
+  }
+  
+  private List<UserRole> getDefaultRoles()
+  {
     UserRole role = roleRepository.findByName("ROLE_USER").orElse(null);
     List<UserRole> roles = new ArrayList<>();
     roles.add(role);
-    user.setRoles(roles);
-    userRepository.save(user);
+    return roles;
   }
   
 

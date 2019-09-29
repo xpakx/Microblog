@@ -1,25 +1,24 @@
 package io.github.xpakx.micro.controller;
 
 import org.springframework.stereotype.Controller;
-import io.github.xpakx.micro.service.UserService;
-import io.github.xpakx.micro.service.PostService;
-import io.github.xpakx.micro.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
+import io.github.xpakx.micro.service.UserService;
+import io.github.xpakx.micro.service.PostService;
+import io.github.xpakx.micro.service.CommentService;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.Comment;
 import io.github.xpakx.micro.entity.User;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.ServletException;
 import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
-import org.springframework.data.domain.Page;
-import java.util.List;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+
+import org.springframework.data.domain.Page;
+import java.util.List;
 
 @Controller
 public class UserController
@@ -40,7 +39,6 @@ public class UserController
   public String registration(Model model)
   {
     model.addAttribute("userForm", new User());
-
     return "register";
   }
   
@@ -48,8 +46,7 @@ public class UserController
   public String registration(@Valid @ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model)
   {
     bindingResult.addAllErrors(testUserFormForErrors(userForm));
-    
-    if (bindingResult.hasErrors()) 
+    if(bindingResult.hasErrors()) 
     {
        return "register";
     }
