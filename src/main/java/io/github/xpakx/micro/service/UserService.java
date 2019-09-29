@@ -53,9 +53,8 @@ public class UserService
   
   private List<UserRole> getDefaultRoles()
   {
-    UserRole role = roleRepository.findByName("ROLE_USER").orElse(null);
     List<UserRole> roles = new ArrayList<>();
-    roles.add(role);
+    roles.add(roleRepository.findByName("ROLE_USER").orElse(null););
     return roles;
   }
   
