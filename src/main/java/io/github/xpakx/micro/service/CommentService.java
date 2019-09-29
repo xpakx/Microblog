@@ -81,7 +81,7 @@ public class CommentService
   
   public Page<Comment> findAllByUserId(Integer userId, Integer page)
   {
-    Pageable nthPageWith20Elements = PageRequest.of(0, 20, Sort.by("id").descending());
+    Pageable nthPageWith20Elements = PageRequest.of(page, 20, Sort.by("id").descending());
     Page<Comment> allComments = commentRepository.findAllByUserId(userId, nthPageWith20Elements);
     
     return allComments;    
@@ -89,7 +89,7 @@ public class CommentService
   
   public Page<Comment> findAllByPostId(Integer postId, Integer page)
   {
-    Pageable nthPageWith20Elements = PageRequest.of(0, 20, Sort.by("id").descending());
+    Pageable nthPageWith20Elements = PageRequest.of(page, 20, Sort.by("id").descending());
     Page<Comment> allComments = commentRepository.findAllByPostId(postId, nthPageWith20Elements);
     
     return allComments;     
