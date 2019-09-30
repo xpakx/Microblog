@@ -55,7 +55,14 @@ public class PostController
   @GetMapping("/posts/{page}")
   public String getAllPosts(@PathVariable Integer page, Model model)
   {
-    Page<Post> posts = postService.findAll(page);
+    List<Post> posts = postService.findAll(page).getContent();
+    
+    for(Post post : posts)
+    {
+      List<Comment> comments = commentService.findTwoByPostId(post.getId()).getContent();
+      post.setComments(comments);
+    }
+    
     model.addAttribute("posts", posts);
     return "posts";
   }
