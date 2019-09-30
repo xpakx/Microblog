@@ -11,12 +11,12 @@
 <div> 
   <div class="user-list-header" th:if="${user}" >
     <div th:text="@{${user.username} + '\'s posts'}"></div>
-    <a class="button" th:href="@{/user/{id}/comments(id=${user.id})}">show comments</a>
+    <a class="button" th:href="@{/user/{username}/comments(username=${user.username})}">show comments</a>
   </div>
   
   <div class="post" th:each="post : ${posts}">
     <a class="author" th:href="@{/user/{username}/posts(username=${post.user.username})}" th:text="${post.user.username}">Text ...</a>
-    <p class="postBody" th:text="${post.message}">Text ...</p>
+    <div class="postBody" msg:process="${post.message}">Text ...</div>
     
     <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
       <a class="button" th:href="@{/post/{id}/edit(id=${post.id})}">edit</a>
