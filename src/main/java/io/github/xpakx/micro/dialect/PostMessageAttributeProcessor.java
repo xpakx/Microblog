@@ -11,6 +11,10 @@ import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.unbescape.html.HtmlEscape;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.thymeleaf.spring5.requestdata.RequestDataValueProcessorUtils;
+
+
 
 public class PostMessageAttributeProcessor extends AbstractAttributeTagProcessor 
 {
@@ -29,10 +33,12 @@ public class PostMessageAttributeProcessor extends AbstractAttributeTagProcessor
     final IStandardExpression expression = parser.parseExpression(context, attributeValue);
     final String message = (String) expression.execute(context);
     final String messageWithoutHTML = HtmlEscape.escapeHtml5(message);
+    final String tagAddress =  RequestDataValueProcessorUtils.processUrl(context, "/tag/");
+    final String userAddress =  RequestDataValueProcessorUtils.processUrl(context, "/user/");
     final String finalMessage = messageWithoutHTML
       .replace("\n", "<br />")
-      .replaceAll("(\\s|\\A)#(\\w+)(\\s|\\z)", "$1#<a href=''>$2</a>$3")
-      .replaceAll("(\\s|\\A)@(\\w+)(\\s|\\z|:)", "$1@<a href=''>$2</a>$3");
+      .replaceAll("(\\s|\\A)#(\\w+)(\\s|\\z)", "$1#<a href='"+tagAddress+"$2'>$2</a>$3")
+      .replaceAll("(\\s|\\A)@(\\w+)(\\s|\\z|:)", "$1@<a href='"+userAddress+"$2'>$2</a>$3");
     structureHandler.setBody(finalMessage, false);
   }
 

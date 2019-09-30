@@ -9,7 +9,7 @@
 <div>
   <div class="post" th:if="${post}">
     <a class="author" th:href="@{/user/{id}/posts(id=${post.user.id})}" th:text="${post.user.username}">Text ...</a>
-    <p class="postBody" th:text="${post.message}">Text ...</p>
+    <p class="postBody" msg:process="${post.message}">Text ...</p>
     
     <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
       <a th:href="@{/post/{id}/edit(id=${post.id})}">edit</a>
