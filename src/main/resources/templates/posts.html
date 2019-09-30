@@ -17,7 +17,7 @@
  
   
   <div class="post" th:each="post : ${posts}">
-    <h2 th:text="${post.user.username}">Text ...</h2>
+    <a class="author" th:href="@{/user/{id}/posts(id=${post.user.id})}" th:text="${post.user.username}">Text ...</a>
     <p class="postBody" th:text="${post.message}">Text ...</p>
     
     <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
@@ -35,7 +35,7 @@
    
         <div th:each="i : ${#numbers.sequence(post.comments.size() - 1, 0, -1)}"
      th:with="comment=${post.comments[i]}">
-          <h2 th:text="${comment.user.username}">Text ...</h2>
+          <a class="author" th:href="@{/user/{id}/posts(id=${comment.user.id})}" th:text="${comment.user.username}">Text ...</a>
           <p class="postBody" th:text="${comment.message}">Text ...</p>
           <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="button" th:href="@{/comment/{id}/edit(id=${comment.id})}">edit</a>

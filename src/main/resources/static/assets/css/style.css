@@ -34,11 +34,14 @@ body, html
   margin-top: -5px;
 }
 
-.post h2 
+.post a.author
 {
   font-size: .7em;
   color: #C3A1A0;
   margin-top: -5px;
+  text-decoration: none;
+  display: block;
+  font-weight: bold
 }
 
 p.postBody 
