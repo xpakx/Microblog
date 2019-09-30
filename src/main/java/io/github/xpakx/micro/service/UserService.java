@@ -65,7 +65,7 @@ public class UserService
   
   public boolean isUserWithGivenUsernameExist(User user)
   {
-    return findByUsername(user.getUsername()).isPresent();
+    return userRepository.findByUsernameIgnoreCase(user.getUsername()).isPresent();
   }
   
   public boolean isUserWithGivenEmailExist(User user)
