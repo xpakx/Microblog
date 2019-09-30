@@ -40,16 +40,15 @@ public class PostController
   @GetMapping({"/all", "/posts", "/home"})
   public String getAllPosts(Model model)
   {
-    Page<Post> posts = postService.findAll(0);
-    List<Post> postList = posts.getContent();
+    List<Post> posts = postService.findAll(0).getContent();
     
-    for(Post post : postList)
+    for(Post post : posts)
     {
       List<Comment> comments = commentService.findTwoByPostId(post.getId()).getContent();
       post.setComments(comments);
     }
     
-    model.addAttribute("posts", postList);
+    model.addAttribute("posts", posts);
     return "posts";
   }
   
