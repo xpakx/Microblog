@@ -295,7 +295,8 @@ public class UserControllerTest
     //given
     Page<Post> posts = Page.empty();
     User user = new User();
-    given(userService.findById(anyInt()))
+    user.setId(1);
+    given(userService.findByUsernameIgnoreCase(anyString()))
     .willReturn(Optional.of(user));
     given(postService.findAllByUserId(anyInt(), anyInt()))
     .willReturn(posts);
@@ -322,7 +323,8 @@ public class UserControllerTest
     //given
     Page<Post> posts = Page.empty();
     User user = new User();
-    given(userService.findById(anyInt()))
+    user.setId(1);
+    given(userService.findByUsernameIgnoreCase(anyString()))
     .willReturn(Optional.of(user));
     given(postService.findAllByUserId(anyInt(), anyInt()))
     .willReturn(posts);
@@ -350,7 +352,8 @@ public class UserControllerTest
     //given
     Page<Comment> comments = Page.empty();
     User user = new User();
-    given(userService.findById(anyInt()))
+    user.setId(1);
+    given(userService.findByUsernameIgnoreCase(anyString()))
     .willReturn(Optional.of(user));
     given(commentService.findAllByUserId(anyInt(), anyInt()))
     .willReturn(comments);
@@ -377,7 +380,8 @@ public class UserControllerTest
     //given
     Page<Comment> comments = Page.empty();
     User user = new User();
-    given(userService.findById(anyInt()))
+    user.setId(1);
+    given(userService.findByUsernameIgnoreCase(anyString()))
     .willReturn(Optional.of(user));
     given(commentService.findAllByUserId(anyInt(), anyInt()))
     .willReturn(comments);

@@ -11,6 +11,7 @@ import io.github.xpakx.micro.service.CommentService;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.Comment;
 import io.github.xpakx.micro.entity.User;
+import io.github.xpakx.micro.error.NotFoundException;
 
 import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
@@ -78,11 +79,12 @@ public class UserController
   }
   
   
-  @GetMapping("/user/{userId}/posts")
-  public String getUserPosts(@PathVariable Integer userId, Model model)
-  {
-    model.addAttribute("user", userService.findById(userId).orElse(null));
-    model.addAttribute("posts", postService.findAllByUserId(userId, 0).getContent());
+  @GetMapping("/user/{username}/posts")
+  public String getUserPosts(@PathVariable String username, Model model)
+  { 
+    User user = userService.findByUsernameIgnoreCase(username).orElseThrow(() -> new NotFoundException("No such user!"));
+    model.addAttribute("user", user);
+    model.addAttribute("posts", postService.findAllByUserId(user.getId(), 0).getContent());
     return "userPosts";
   }
   
