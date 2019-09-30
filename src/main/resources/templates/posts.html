@@ -18,7 +18,7 @@
   
   <div class="post" th:each="post : ${posts}">
     <a class="author" th:href="@{/user/{username}/posts(username=${post.user.username})}" th:text="${post.user.username}">Text ...</a>
-    <p class="postBody" msg:process="${post.message}">Text ...</p>
+    <div class="postBody" msg:process="${post.message}">Text ...</div>
     
     <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
       <a class="button" th:href="@{/post/{id}/edit(id=${post.id})}">edit</a>
@@ -36,7 +36,7 @@
         <div th:each="i : ${#numbers.sequence(post.comments.size() - 1, 0, -1)}"
      th:with="comment=${post.comments[i]}">
           <a class="author" th:href="@{/user/{username}/posts(username=${comment.user.username})}" th:text="${comment.user.username}">Text ...</a>
-          <p class="postBody" th:text="${comment.message}">Text ...</p>
+          <div class="postBody" th:text="${comment.message}">Text ...</div>
           <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
             <a class="button" th:href="@{/comment/{id}/edit(id=${comment.id})}">edit</a>
             <form class="button-link-wrapper" th:action="@{/comment/{id}/delete(id=${comment.id})}" method="post"><button type="submit" class="button-link">delete</button></form>   

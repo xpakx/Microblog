@@ -14,16 +14,25 @@ import org.unbescape.html.HtmlEscape;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.thymeleaf.spring5.requestdata.RequestDataValueProcessorUtils;
 
-
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 
 public class PostMessageAttributeProcessor extends AbstractAttributeTagProcessor 
 {
   private static final String ATTR_NAME = "process";
   private static final int PRECEDENCE = 10000;
+  Parser markdownParser;
+  HtmlRenderer htmlRenderer;
   
   public PostMessageAttributeProcessor(final String dialectPrefix) 
   {
-    super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE,        true);   
+    super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE,        true);  
+    
+    MutableDataSet options = new MutableDataSet();
+    markdownParser = Parser.builder(options).build();
+    htmlRenderer = HtmlRenderer.builder(options).build(); 
   }
 
   protected void doProcess(final ITemplateContext context, final IProcessableElementTag tag, final AttributeName attributeName, final String attributeValue, final IElementTagStructureHandler structureHandler) 
@@ -35,10 +44,12 @@ public class PostMessageAttributeProcessor extends AbstractAttributeTagProcessor
     final String messageWithoutHTML = HtmlEscape.escapeHtml5(message);
     final String tagAddress =  RequestDataValueProcessorUtils.processUrl(context, "/tag/");
     final String userAddress =  RequestDataValueProcessorUtils.processUrl(context, "/user/");
-    final String finalMessage = messageWithoutHTML
-      .replace("\n", "<br />")
-      .replaceAll("(\\s|\\A)#(\\w+)(\\s|\\z)", "$1#<a href='"+tagAddress+"$2'>$2</a>$3")
-      .replaceAll("(\\s|\\A)@(\\w+)(\\s|\\z|:)", "$1@<a href='"+userAddress+"$2'>$2</a>$3");
+    Node parsedMessage = markdownParser.parse(messageWithoutHTML);
+    String messageWithHTML = htmlRenderer.render(parsedMessage);
+    final String finalMessage = messageWithHTML
+      .replaceAll("(\\s|\\A|>)#(\\w+)", "$1#<a href='"+tagAddress+"$2'>$2</a>")
+      .replaceAll("(\\s|\\A|>)@(\\w+)", "$1@<a href='"+userAddress+"$2'>$2</a>");
+      
     structureHandler.setBody(finalMessage, false);
   }
 

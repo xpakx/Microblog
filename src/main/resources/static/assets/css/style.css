@@ -44,7 +44,7 @@ body, html
   font-weight: bold;
 }
 
-p.postBody 
+.postBody 
 {
   text-transform: none;
   letter-spacing: 0;
