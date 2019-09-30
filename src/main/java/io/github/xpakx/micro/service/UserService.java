@@ -58,5 +58,21 @@ public class UserService
     return roles;
   }
   
+  public boolean isPasswordAndConfirmPasswordDifferent(User user)
+  {
+    return !user.getPassword().equals(user.getConfirmPassword());
+  }
+  
+  public boolean isUserWithGivenUsernameExist(User user)
+  {
+    return findByUsername(user.getUsername()).isPresent();
+  }
+  
+  public boolean isUserWithGivenEmailExist(User user)
+  {
+    return findByEmail(user.getEmail()).isPresent();
+  }
+  
+  
 
 }

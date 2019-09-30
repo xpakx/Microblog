@@ -59,17 +59,17 @@ public class UserController
   {
     BindException errors = new BindException(userForm, "userForm");
     
-    if(isPasswordAndConfirmPasswordDifferent(userForm))
+    if(userService.isPasswordAndConfirmPasswordDifferent(userForm))
     {
       errors.rejectValue("confirmPassword", "error.userForm", "Passwords specified must be identical!");
     }
     
-    if(isUserWithGivenUsernameExist(userForm))
+    if(userService.isUserWithGivenUsernameExist(userForm))
     {
       errors.rejectValue("username", "error.userForm", "User with specified username exists!");
     }
     
-    if(isUserWithGivenEmailExist(userForm))
+    if(userService.isUserWithGivenEmailExist(userForm))
     {
       errors.rejectValue("email", "error.userForm", "User with specified email exists!");
     }
@@ -77,20 +77,6 @@ public class UserController
     return errors;
   }
   
-  private boolean isPasswordAndConfirmPasswordDifferent(User userForm)
-  {
-    return !userForm.getPassword().equals(userForm.getConfirmPassword());
-  }
-  
-  private boolean isUserWithGivenUsernameExist(User userForm)
-  {
-    return userService.findByUsername(userForm.getUsername()).isPresent();
-  }
-  
-  private boolean isUserWithGivenEmailExist(User userForm)
-  {
-    return userService.findByEmail(userForm.getEmail()).isPresent();
-  }
   
   @GetMapping("/user/{userId}/posts")
   public String getUserPosts(@PathVariable Integer userId, Model model)
