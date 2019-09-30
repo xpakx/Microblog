@@ -88,27 +88,30 @@ public class UserController
     return "userPosts";
   }
   
-  @GetMapping("/user/{userId}/posts/{page}")
-  public String getUserPosts(@PathVariable Integer userId, @PathVariable Integer page, Model model)
+  @GetMapping("/user/{username}/posts/{page}")
+  public String getUserPosts(@PathVariable String username, @PathVariable Integer page, Model model)
   {
-    model.addAttribute("user", userService.findById(userId).orElse(null));
-    model.addAttribute("posts", postService.findAllByUserId(userId, page).getContent());
+    User user = userService.findByUsernameIgnoreCase(username).orElseThrow(() -> new NotFoundException("No such user!"));
+    model.addAttribute("user", user);
+    model.addAttribute("posts", postService.findAllByUserId(user.getId(), page).getContent());
     return "userPosts";
   }
   
-  @GetMapping("/user/{userId}/comments")
-  public String getUserComments(@PathVariable Integer userId, Model model)
+  @GetMapping("/user/{username}/comments")
+  public String getUserComments(@PathVariable String username, Model model)
   {
-    model.addAttribute("user", userService.findById(userId).orElse(null));
-    model.addAttribute("comments", commentService.findAllByUserId(userId, 0).getContent());
+    User user = userService.findByUsernameIgnoreCase(username).orElseThrow(() -> new NotFoundException("No such user!"));
+    model.addAttribute("user", user);
+    model.addAttribute("comments", commentService.findAllByUserId(user.getId(), 0).getContent());
     return "userComments";
   }
   
-  @GetMapping("/user/{userId}/comments/{page}")
-  public String getUserComments(@PathVariable Integer userId, @PathVariable Integer page, Model model)
+  @GetMapping("/user/{username}/comments/{page}")
+  public String getUserComments(@PathVariable String username, @PathVariable Integer page, Model model)
   {
-    model.addAttribute("user", userService.findById(userId).orElse(null));
-    model.addAttribute("comments", commentService.findAllByUserId(userId, page).getContent());
+    User user = userService.findByUsernameIgnoreCase(username).orElseThrow(() -> new NotFoundException("No such user!"));
+    model.addAttribute("user", user);
+    model.addAttribute("comments", commentService.findAllByUserId(user.getId(), page).getContent());
     return "userComments";
   }
 }
