@@ -15,6 +15,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.Transient;
+import javax.validation.constraints.Pattern;
 
 import java.util.List;
 
@@ -28,11 +29,12 @@ public class User
   
   @Column(nullable=false, unique=true)
   @NotEmpty
+  @Pattern(regexp="^[a-zA-Z0-9]*$", message="Username should only contains letters and numbers")
   private String username;
   
   @Column(nullable=false, unique=true)
   @NotEmpty
-  @Email(message="Niepoprawny adres e-mail")
+  @Email(message="Wrong e-mail address")
   private String email;
   
   @Column(nullable=false)

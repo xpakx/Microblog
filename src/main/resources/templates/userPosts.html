@@ -15,7 +15,7 @@
   </div>
   
   <div class="post" th:each="post : ${posts}">
-    <a class="author" th:href="@{/user/{id}/posts(id=${post.user.id})}" th:text="${post.user.username}">Text ...</a>
+    <a class="author" th:href="@{/user/{username}/posts(username=${post.user.username})}" th:text="${post.user.username}">Text ...</a>
     <p class="postBody" th:text="${post.message}">Text ...</p>
     
     <div class="actions" sec:authorize="hasRole('ROLE_ADMIN')">
