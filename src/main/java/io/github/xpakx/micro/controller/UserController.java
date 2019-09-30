@@ -64,7 +64,7 @@ public class UserController
       errors.rejectValue("confirmPassword", "error.userForm", "Passwords specified must be identical!");
     }
     
-    if(userService.isUserWithGivenUsernameExist(userForm))
+    if(userService.isUserWithGivenUsernameExistIgnoreCase(userForm))
     {
       errors.rejectValue("username", "error.userForm", "User with specified username exists!");
     }

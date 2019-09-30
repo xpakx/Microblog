@@ -63,7 +63,7 @@ public class UserService
     return !user.getPassword().equals(user.getConfirmPassword());
   }
   
-  public boolean isUserWithGivenUsernameExist(User user)
+  public boolean isUserWithGivenUsernameExistIgnoreCase(User user)
   {
     return userRepository.findByUsernameIgnoreCase(user.getUsername()).isPresent();
   }

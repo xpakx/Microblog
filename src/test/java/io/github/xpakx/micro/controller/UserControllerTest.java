@@ -134,7 +134,7 @@ public class UserControllerTest
     .willReturn(Optional.empty());
     given(userService.isUserWithGivenEmailExist(any(User.class)))
     .willReturn(false);
-    given(userService.isUserWithGivenUsernameExist(any(User.class)))
+    given(userService.isUserWithGivenUsernameExistIgnoreCase(any(User.class)))
     .willReturn(false);
     given(userService.isPasswordAndConfirmPasswordDifferent(any(User.class)))
     .willReturn(false);
@@ -161,7 +161,7 @@ public class UserControllerTest
     .isPasswordAndConfirmPasswordDifferent(any(User.class));
     then(userService)
     .should(times(1))
-    .isUserWithGivenUsernameExist(any(User.class));
+    .isUserWithGivenUsernameExistIgnoreCase(any(User.class));
     then(userService)
     .should(times(1))
     .isUserWithGivenEmailExist(any(User.class));
@@ -186,7 +186,7 @@ public class UserControllerTest
     .willReturn(Optional.of(user));
     given(userService.isUserWithGivenEmailExist(any(User.class)))
     .willReturn(false);
-    given(userService.isUserWithGivenUsernameExist(any(User.class)))
+    given(userService.isUserWithGivenUsernameExistIgnoreCase(any(User.class)))
     .willReturn(true);
     given(userService.isPasswordAndConfirmPasswordDifferent(any(User.class)))
     .willReturn(false);
@@ -224,7 +224,7 @@ public class UserControllerTest
     .willReturn(Optional.empty());
     given(userService.isUserWithGivenEmailExist(any(User.class)))
     .willReturn(true);
-    given(userService.isUserWithGivenUsernameExist(any(User.class)))
+    given(userService.isUserWithGivenUsernameExistIgnoreCase(any(User.class)))
     .willReturn(false);
     given(userService.isPasswordAndConfirmPasswordDifferent(any(User.class)))
     .willReturn(false);
@@ -261,7 +261,7 @@ public class UserControllerTest
     .willReturn(Optional.empty());
     given(userService.isUserWithGivenEmailExist(any(User.class)))
     .willReturn(false);
-    given(userService.isUserWithGivenUsernameExist(any(User.class)))
+    given(userService.isUserWithGivenUsernameExistIgnoreCase(any(User.class)))
     .willReturn(false);
     given(userService.isPasswordAndConfirmPasswordDifferent(any(User.class)))
     .willReturn(true);
