@@ -30,7 +30,9 @@ public class PostMessageAttributeProcessor extends AbstractAttributeTagProcessor
     final String message = (String) expression.execute(context);
     final String messageWithoutHTML = HtmlEscape.escapeHtml5(message);
     final String finalMessage = messageWithoutHTML
-      .replace("\n", "<br />");
+      .replace("\n", "<br />")
+      .replaceAll("(\\s|\\A)#(\\w+)(\\s|\\z)", "$1#<a href=''>$2</a>$3")
+      .replaceAll("(\\s|\\A)@(\\w+)(\\s|\\z|:)", "$1@<a href=''>$2</a>$3");
     structureHandler.setBody(finalMessage, false);
   }
 
