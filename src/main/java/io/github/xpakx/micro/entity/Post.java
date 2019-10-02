@@ -16,6 +16,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Transient;
 import java.util.List;
+import javax.validation.constraints.Size;
 
 @Entity
 @Data
@@ -25,7 +26,8 @@ public class Post
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   
-  @Column(nullable = false)
+  @Column(nullable = false, length=20000)
+  @Size(max=20000, message="Message cannot be longer than 20000 characters!")
   @NotEmpty
   private String message;
 
