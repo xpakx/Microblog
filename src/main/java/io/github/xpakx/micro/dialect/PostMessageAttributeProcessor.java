@@ -42,11 +42,11 @@ public class PostMessageAttributeProcessor extends AbstractAttributeTagProcessor
     final IStandardExpressionParser parser = StandardExpressions.getExpressionParser(configuration);
     final IStandardExpression expression = parser.parseExpression(context, attributeValue);
     final String message = (String) expression.execute(context);
-    final String messageWithoutHTML = HtmlEscape.escapeHtml5(message);
-    
+    final String messageWithoutHTML = HtmlEscape.escapeHtml5(message)
+      .replaceAll("(\\s|\\A)&gt;", "$1>");
     
     final String messageWithHTML = markdownProcessor.parseMarkdownToHTML(messageWithoutHTML);
-    
+        
     final String tagAddress =  RequestDataValueProcessorUtils.processUrl(context, "/tag/");
     final String userAddress =  RequestDataValueProcessorUtils.processUrl(context, "/user/");
     final String messageWithTags = messageWithHTML
