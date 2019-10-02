@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Collections;
 
 import java.security.Principal;
+import javax.validation.Valid;
 
 @Controller
 public class PostController
@@ -76,7 +77,7 @@ public class PostController
   }
   
   @PostMapping("/post/add")
-  public String addPost(@ModelAttribute("postForm") Post postForm, BindingResult bindingResult, Principal principal, Model model) throws ForbiddenException
+  public String addPost(@Valid @ModelAttribute("postForm") Post postForm, BindingResult bindingResult, Principal principal, Model model) throws ForbiddenException
   {    
     User user = userService.findByUsername(principal.getName()).orElse(null);
     
@@ -92,7 +93,11 @@ public class PostController
     if(postForm.getMessage() == null || postForm.getMessage().equals(""))
     {
       bindingResult.rejectValue("message", "error.postForm", "Message cannot be empty!"); 
-      return "addPost";
+    }
+    
+    if(bindingResult.hasErrors()) 
+    {
+       return "addPost";
     }
     
     postService.addPost(postForm);

@@ -6,22 +6,20 @@
 </head>
 <body th:replace="layout :: common_body(~{::div})">
 <div>
-  <form class="form" action="home" th:action="@{/post/add}" method="post">
+  <form class="form" action="home" th:action="@{/post/add}" th:object="${postForm}"  method="post">
 						<div>
-							<textarea class="form-control" name="message"
+							<textarea class="form-control" th:classappend="${#fields.hasErrors('message')} ? has-error : ''" th:field="*{message}"  name="message"
 								placeholder="Message"></textarea>
 						</div>
 						
 								<button class="button" type="submit">Send</button>
 						</div>
-
     <div>
 								<div th:if="${msg!=null}" class="help-block">
 									<p>
 										<span th:text="${msg}"></span>
 									</p>
 								</div>
-        
           
 								<div th:if="${param.error}" class="help-block">
 									<p>
