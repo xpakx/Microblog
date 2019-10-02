@@ -8,4 +8,7 @@ import org.springframework.data.domain.Page;
 public interface PostRepository extends JpaRepository<Post, Integer>
 {
   Page<Post> findAllByUserId(Integer id, Pageable pageable);
+  
+  Page<Post> findAllByMessageContaining(String message, Pageable pageable);
+
 }

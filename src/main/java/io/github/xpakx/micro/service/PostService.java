@@ -87,5 +87,13 @@ public class PostService
     
     return allPosts;   
   }
+  
+  public Page<Post> findAllByTag(String tag, Integer page)
+  {
+    Pageable nthPageWith20Elements = PageRequest.of(page, 20, Sort.by("id").descending());
+    Page<Post> allPosts = postRepository.findAllByMessageContaining("#"+tag, nthPageWith20Elements);
+    
+    return allPosts;   
+  }
 
 }
