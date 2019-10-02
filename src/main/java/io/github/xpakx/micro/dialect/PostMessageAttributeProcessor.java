@@ -16,6 +16,10 @@ import org.thymeleaf.spring5.requestdata.RequestDataValueProcessorUtils;
 
 import io.github.xpakx.micro.utils.MarkdownProcessor;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import io.github.xpakx.micro.service.UserService;
+
 public class PostMessageAttributeProcessor extends AbstractAttributeTagProcessor 
 {
   private static final String ATTR_NAME = "process";
@@ -23,10 +27,13 @@ public class PostMessageAttributeProcessor extends AbstractAttributeTagProcessor
   
   MarkdownProcessor markdownProcessor;
   
-  public PostMessageAttributeProcessor(final String dialectPrefix) 
+  UserService userService;
+  
+  public PostMessageAttributeProcessor(final String dialectPrefix, UserService userService) 
   {
     super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE,        true);  
     markdownProcessor = new MarkdownProcessor();
+    this.userService = userService;
   }
   
   protected void doProcess(final ITemplateContext context, final IProcessableElementTag tag, final AttributeName attributeName, final String attributeValue, final IElementTagStructureHandler structureHandler) 
@@ -42,11 +49,34 @@ public class PostMessageAttributeProcessor extends AbstractAttributeTagProcessor
     
     final String tagAddress =  RequestDataValueProcessorUtils.processUrl(context, "/tag/");
     final String userAddress =  RequestDataValueProcessorUtils.processUrl(context, "/user/");
-    final String finalMessage = messageWithHTML
-      .replaceAll("(\\s|\\A|>)#(\\w+)", "$1#<a href='"+tagAddress+"$2'>$2</a>")
-      .replaceAll("(\\s|\\A|>)@(\\w+)", "$1@<a href='"+userAddress+"$2'>$2</a>");
+    final String messageWithTags = messageWithHTML
+      .replaceAll("(\\s|\\A|>)#(\\w+)", "$1#<a href='"+tagAddress+"$2'>$2</a>");
+    final String finalMessage = replaceMentionsToLinksIfMentionedUsersExists(messageWithTags, userAddress);
+      
+      //.replaceAll("(\\s|\\A|>)@(\\w+)", "$1@<a href='"+userAddress+"$2'>$2</a>");
+      
+    
       
     structureHandler.setBody(finalMessage, false);
+  }
+  
+  public String replaceMentionsToLinksIfMentionedUsersExists(String messageToParse, String userAddress)
+  {
+    Pattern pattern = Pattern.compile("(\\s|\\A|>)@(\\w+)");
+    Matcher matcher = pattern.matcher(messageToParse);
+    StringBuffer sb = new StringBuffer(messageToParse.length());
+    
+    while (matcher.find()) 
+    {
+      String username = matcher.group(2);
+      if(userService.findByUsernameIgnoreCase(username).isPresent())
+      {
+        String linkToUser = matcher.group(1)+"@<a href='"+userAddress+matcher.group(2)+"'>"+matcher.group(2)+"</a>";
+        matcher.appendReplacement(sb, Matcher.quoteReplacement(linkToUser));
+      }
+    }
+    matcher.appendTail(sb);
+    return sb.toString();
   }
 
 
