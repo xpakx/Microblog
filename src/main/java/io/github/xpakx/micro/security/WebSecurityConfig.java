@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import javax.annotation.Resource;
+import org.springframework.security.authentication.AuthenticationManager;
 
 @Configuration
 @EnableWebSecurity
@@ -68,5 +69,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
       .permitAll()
       .and()
     .exceptionHandling();
+  }
+  
+  @Bean
+  public AuthenticationManager customAuthenticationManager() throws Exception 
+  {
+    return authenticationManager();
   }
 }

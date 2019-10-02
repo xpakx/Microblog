@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import io.github.xpakx.micro.service.UserService;
 import io.github.xpakx.micro.service.PostService;
 import io.github.xpakx.micro.service.CommentService;
+import io.github.xpakx.micro.service.SecurityService;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.Comment;
 import io.github.xpakx.micro.entity.User;
@@ -20,20 +21,23 @@ import org.springframework.validation.Errors;
 
 import org.springframework.data.domain.Page;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class UserController
 {
   private UserService userService;
   private PostService postService;
+  private SecurityService securityService;
   private CommentService commentService;
   
   @Autowired
-  public UserController(UserService userService, PostService postService, CommentService commentService)
+  public UserController(UserService userService, PostService postService, CommentService commentService, SecurityService securityService)
   {
     this.userService = userService;
     this.postService = postService;
     this.commentService = commentService;
+    this.securityService = securityService;
   }
   
   @GetMapping("register")
@@ -44,16 +48,19 @@ public class UserController
   }
   
   @PostMapping("register")
-  public String registration(@Valid @ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model)
+  public String registration(@Valid @ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model, HttpServletRequest request)
   {
     bindingResult.addAllErrors(testUserFormForErrors(userForm));
     if(bindingResult.hasErrors()) 
     {
        return "register";
     }
-    
+    String password = userForm.getPassword();
     userService.save(userForm);
-    return "redirect:/login";
+    
+    securityService.autologin(userForm.getEmail(), password, request);
+    
+    return "redirect:/posts";
   }
   
   private Errors testUserFormForErrors(User userForm)
@@ -77,8 +84,7 @@ public class UserController
     
     return errors;
   }
-  
-  
+    
   @GetMapping("/user/{username}/posts")
   public String getUserPosts(@PathVariable String username, Model model)
   { 

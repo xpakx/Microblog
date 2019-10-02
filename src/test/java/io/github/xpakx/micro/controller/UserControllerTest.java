@@ -32,6 +32,7 @@ import org.mockito.InjectMocks;
 import io.github.xpakx.micro.service.PostService;
 import io.github.xpakx.micro.service.CommentService;
 import io.github.xpakx.micro.service.UserService;
+import io.github.xpakx.micro.service.SecurityService;
 import io.github.xpakx.micro.entity.Post;
 import io.github.xpakx.micro.entity.Comment;
 import io.github.xpakx.micro.entity.User;
@@ -78,6 +79,9 @@ public class UserControllerTest
   
   @Mock
   private CommentService commentService;
+  
+  @Mock
+  private SecurityService securityService;
   
   @Mock
   private UserService userService;
@@ -152,7 +156,7 @@ public class UserControllerTest
     //then
     .andExpect(status().isFound())
     .andExpect(model().hasNoErrors())
-    .andExpect(redirectedUrl("/login"));
+    .andExpect(redirectedUrl("/posts"));
       
     ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
     
