@@ -51,11 +51,7 @@ public class PostMessageAttributeProcessor extends AbstractAttributeTagProcessor
     final String userAddress =  RequestDataValueProcessorUtils.processUrl(context, "/user/");
     final String messageWithTags = messageWithHTML
       .replaceAll("(\\s|\\A|>)#(\\w+)", "$1#<a href='"+tagAddress+"$2'>$2</a>");
-    final String finalMessage = replaceMentionsToLinksIfMentionedUsersExists(messageWithTags, userAddress);
-      
-      //.replaceAll("(\\s|\\A|>)@(\\w+)", "$1@<a href='"+userAddress+"$2'>$2</a>");
-      
-    
+    final String finalMessage = replaceMentionsToLinksIfMentionedUsersExists(messageWithTags, userAddress);   
       
     structureHandler.setBody(finalMessage, false);
   }

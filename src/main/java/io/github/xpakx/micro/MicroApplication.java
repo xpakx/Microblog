@@ -12,10 +12,4 @@ public class MicroApplication {
   {
 		  SpringApplication.run(MicroApplication.class, args);
 	 }
-
-  /*@Bean
-  public CustomDialect customDialect()
-  {
-    return new CustomDialect();
-  }*/
 }
