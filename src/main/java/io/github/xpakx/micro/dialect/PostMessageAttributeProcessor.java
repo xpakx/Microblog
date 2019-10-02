@@ -67,7 +67,7 @@ public class PostMessageAttributeProcessor extends AbstractAttributeTagProcessor
       String username = matcher.group(2);
       if(userService.findByUsernameIgnoreCase(username).isPresent())
       {
-        String linkToUser = matcher.group(1)+"@<a href='"+userAddress+matcher.group(2)+"'>"+matcher.group(2)+"</a>";
+        String linkToUser = matcher.group(1)+"@<a href='"+userAddress+matcher.group(2)+"'/posts>"+matcher.group(2)+"</a>";
         matcher.appendReplacement(sb, Matcher.quoteReplacement(linkToUser));
       }
     }

@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.github.xpakx.micro.entity.Post;
+import io.github.xpakx.micro.entity.User;
 import io.github.xpakx.micro.repository.PostRepository;
 import io.github.xpakx.micro.error.NotFoundException;
 import io.github.xpakx.micro.error.UserUnauthorized;
@@ -15,15 +16,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+
+
 @Service
 public class PostService
 {
   private PostRepository postRepository;
+  private NotificationService notificationService;
   
   @Autowired
-  public PostService(PostRepository postRepository)
+  public PostService(PostRepository postRepository,  NotificationService notificationService)
   {
     this.postRepository = postRepository;
+    this.notificationService = notificationService;
   }
   
   public Post findById(Integer i)
@@ -68,7 +73,8 @@ public class PostService
   {
     post.setId(null);
     postRepository.save(post);
-
+    
+    notificationService.addMentions(post.getMessage(), post, post.getUser());
     return post;
   }
     
@@ -95,5 +101,7 @@ public class PostService
     
     return allPosts;   
   }
+  
+  
 
 }

@@ -19,11 +19,13 @@ import org.springframework.data.domain.Sort;
 public class CommentService
 {
   private CommentRepository commentRepository;
+  private NotificationService notificationService;
   
   @Autowired
-  public CommentService(CommentRepository commentRepository)
+  public CommentService(CommentRepository commentRepository,  NotificationService notificationService)
   {
     this.commentRepository = commentRepository;
+    this.notificationService = notificationService;
   }
   
   public Comment findById(Integer i)
@@ -76,6 +78,7 @@ public class CommentService
     comment.setId(null);
     commentRepository.save(comment);
 
+    notificationService.addMentions(comment.getMessage(), comment.getPost(), comment.getUser());
     return comment;
   }
   

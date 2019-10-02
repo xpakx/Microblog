@@ -37,6 +37,9 @@ public class PostServiceTest
   @Mock
   private PostRepository postRepository;
   
+  @Mock
+  private NotificationService notificationService;
+  
   @InjectMocks
   private PostService postService;
   

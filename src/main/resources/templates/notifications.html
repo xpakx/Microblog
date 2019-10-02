@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:th="http://www.thymeleaf.org"
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+ 
+<head th:replace="layout :: common_header(~{::title})">
+  <title>Microblog – Notifications</title>
+</head>
+
+<body th:replace="layout :: common_body(~{::div})">
+<div> 
+  <div class="user-list-header" th:if="${user}" >
+    <div th:text="@{${user.username} + '\'s notifications'}"></div>
+  </div>
+  
+  <div class="notification" th:each="notif : ${notifications}">
+    <a class="author" th:href="@{/user/{username}/posts(username=${notif.caller.username})}" th:text="${notif.caller.username}">Text ...</a>
+    mentioned you in <a th:href="@{/post/{id}(id=${notif.post.id})}">this post</a>.
+     
+  </div>
+</div>  
+      
+</body>
+</html>
