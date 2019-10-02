@@ -38,6 +38,9 @@ public class CommentServiceTest
   @Mock
   private CommentRepository commentRepository;
   
+  @Mock
+  private NotificationService notificationService;
+  
   @InjectMocks
   private CommentService commentService;
   
