@@ -17,7 +17,8 @@
   <div class="header">
     <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a>
     <a sec:authorize="!isAuthenticated()" th:href="@{/register}">Register</a>
-    <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
+    
+    <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout (<span sec:authentication="name"></span>)</a>
     <a th:href="@{/posts}">Posts</a>
   </div>
   
