@@ -19,6 +19,7 @@
     <a sec:authorize="!isAuthenticated()" th:href="@{/register}">Register</a>
     
     <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout (<span sec:authentication="name"></span>)</a>
+    <a sec:authorize="isAuthenticated()" th:href="@{/notifications}" th:text="${notifcount}"></a>
     <a th:href="@{/posts}">Posts</a>
   </div>
   
