@@ -8,13 +8,13 @@
 <body th:replace="layout :: common_body(~{::div})">
 <div>
   <div class="post" th:if="${exception}">
-    
+    <h1>Error</h1>
     <div class="postBody" th:text="${exception.message}">Text ...</div>
       
      
     
    </div>		
-   ABC			
+  
 </div>  
 </body>
 </html>

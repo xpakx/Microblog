@@ -36,17 +36,18 @@ public class GlobalControllerAdvice
   @ModelAttribute("notifcount")
   public Integer getNotificationCountForCurrentUser(Principal principal) 
   {
-    Optional<User> user = userService.findByUsername(principal.getName());
-    
-    if(user.isPresent())
+    Integer result = 0;
+    if(principal != null)
     {
-      return notificationService.getNewNotificationsCount(user.get().getId());
-    }
-    else
-    {
-      return 0;
-    }
+      Optional<User>  user = userService.findByUsername(principal.getName());
     
+      if(user.isPresent())
+      {
+        result = notificationService.getNewNotificationsCount(user.get().getId());
+      }
+    }
+    return result;
     
   }
+  
 }
