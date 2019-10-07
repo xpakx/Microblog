@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.Query;
 
 public interface PostRepository extends JpaRepository<Post, Integer>
 {
@@ -21,5 +22,8 @@ public interface PostRepository extends JpaRepository<Post, Integer>
   
   @EntityGraph(attributePaths={"user"})
   Optional<Post> findById(Integer i);
-
+    
+  @Query("select post from Post post inner join post.tags tag where tag.name = :tagname")
+  @EntityGraph(attributePaths={"user"})
+  Page<Post> findAllByTagName(String tagname, Pageable pageable);
 }

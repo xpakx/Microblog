@@ -23,12 +23,14 @@ public class PostService
 {
   private PostRepository postRepository;
   private NotificationService notificationService;
+  private TagService tagService;
   
   @Autowired
-  public PostService(PostRepository postRepository,  NotificationService notificationService)
+  public PostService(PostRepository postRepository,  NotificationService notificationService, TagService tagService)
   {
     this.postRepository = postRepository;
     this.notificationService = notificationService;
+    this.tagService = tagService;
   }
   
   public Post findById(Integer i)
@@ -56,6 +58,7 @@ public class PostService
     Optional<Post> foundPost = postRepository.findById(i);
     Post fPost = foundPost.orElseThrow(() -> new NotFoundException("User not found!"));
     fPost.setMessage(post.getMessage());
+    tagService.addTags(fPost.getMessage(), fPost);
     postRepository.save(fPost);
   }
   
@@ -66,12 +69,14 @@ public class PostService
     if(fPost.getUser().getId() != userId) 
     {throw new UserUnauthorized("User unauthorized!");}
     fPost.setMessage(post.getMessage());
+    tagService.addTags(fPost.getMessage(), fPost);
     postRepository.save(fPost);
   }
   
   public Post addPost(Post post)
   {
     post.setId(null);
+    tagService.addTags(post.getMessage(), post);
     postRepository.save(post);
     
     notificationService.addMentions(post.getMessage(), post, post.getUser());
@@ -97,11 +102,10 @@ public class PostService
   public Page<Post> findAllByTag(String tag, Integer page)
   {
     Pageable nthPageWith20Elements = PageRequest.of(page, 20, Sort.by("id").descending());
-    Page<Post> allPosts = postRepository.findAllByMessageContaining("#"+tag, nthPageWith20Elements);
+    Page<Post> allPosts = postRepository.findAllByTagName(tag, nthPageWith20Elements);
     
     return allPosts;   
   }
-  
   
 
 }

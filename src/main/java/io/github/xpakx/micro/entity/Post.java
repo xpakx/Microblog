@@ -18,6 +18,11 @@ import javax.persistence.Transient;
 import java.util.List;
 import javax.validation.constraints.Size;
 
+import javax.persistence.ManyToMany;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+
 @Entity
 @Data
 public class Post
@@ -39,4 +44,10 @@ public class Post
   
   @Transient
   private List<Comment> comments;
+  
+  @ManyToMany(cascade = CascadeType.MERGE)
+  @JoinTable(name="post_tag", 
+             joinColumns={@JoinColumn(name="post_id",  referencedColumnName="id")},
+             inverseJoinColumns={@JoinColumn(name="tag_id",  referencedColumnName="id")})
+  private List<Tag> tags;
 }

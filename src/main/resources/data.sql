@@ -1,3 +1,5 @@
+delete from  `post_tag`;
+delete from  `tag`;
 delete from  `user_role`;
 delete from  `role`;
 delete from  `user`;

@@ -21,6 +21,7 @@ import java.util.Collections;
 
 import java.security.Principal;
 import javax.validation.Valid;
+import org.springframework.transaction.annotation.Transactional;
 
 @Controller
 public class TagController
@@ -37,6 +38,7 @@ public class TagController
 
   
   @GetMapping({"/tag/{tag}"})
+  @Transactional
   public String getAllPosts(@PathVariable String tag, Model model)
   {
     List<Post> posts = postService.findAllByTag(tag, 0).getContent();
