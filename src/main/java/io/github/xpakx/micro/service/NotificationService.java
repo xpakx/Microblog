@@ -66,6 +66,7 @@ public class NotificationService
       .distinct()
       .map(username -> userService.findByUsernameIgnoreCase(username))
       .filter(user -> user.isPresent())
+      .filter(user -> !user.get().getUsername().equals(caller.getUsername()))
       .forEach(user -> addNotification(user.get(), post, caller));
   }
   
