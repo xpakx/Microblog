@@ -55,14 +55,18 @@ public class NotificationService
     List<String> allMentions = new ArrayList<String>();
     Matcher m = Pattern.compile("(\\s|\\A|>)@(\\w+)")
      .matcher(message);
+     
     while (m.find()) 
     {
-      Optional<User> user = userService.findByUsernameIgnoreCase(m.group(2));
-      if(user.isPresent())
-      {
-        addNotification(user.get(), post, caller);
-      }
+      allMentions.add(m.group(2));
     }
+      
+    allMentions.stream()
+      .map(username -> username.toLowerCase())
+      .distinct()
+      .map(username -> userService.findByUsernameIgnoreCase(username))
+      .filter(user -> user.isPresent())
+      .forEach(user -> addNotification(user.get(), post, caller));
   }
   
   private void addNotification(User userToNotify, Post post, User caller)
