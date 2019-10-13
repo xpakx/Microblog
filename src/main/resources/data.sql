@@ -5,6 +5,7 @@ delete from  `role`;
 delete from  `user`;
 delete from  `post`;
 delete from  `comment`;
+delete from  `notification`;
 
 INSERT INTO `role` (id, name) VALUES (1, 'ROLE_ADMIN'), (2, 'ROLE_MOD'), (3, 'ROLE_USER');
 
