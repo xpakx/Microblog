@@ -40,6 +40,9 @@ public class PostServiceTest
   @Mock
   private NotificationService notificationService;
   
+  @Mock
+  private TagService tagService;
+  
   @InjectMocks
   private PostService postService;
   
