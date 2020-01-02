@@ -19,4 +19,6 @@ And then you can access microblog here: http://localhost:8080
 
 Microblog uses an MySql database. By default database's name is _test_, default username is _root_ and default password is empty. You can change them in src/main/resources/applocation.properties
 
+## Demo
 
+You can try Microblog [here](https://pacific-fjord-54200.herokuapp.com/posts).
